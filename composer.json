@@ -1,0 +1,27 @@
+{
+    "name": "igor/wp_cli_file_manager",
+    "description": "A simple file manager for reading and updating various types of files",
+    "require": {
+
+    },
+    "autoload": {
+        "psr-4": {
+            "WpCliFileManager\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Igor Hrcek",
+            "email": "igor@hrcek.rs"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "mikey179/vfsstream": "^1.6"
+    }
+}
