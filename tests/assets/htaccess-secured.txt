@@ -1,0 +1,34 @@
+# BEGIN WP CLI SECURE
+#### marker DISABLE WP-CONFIG ACCESS start ####
+<Files wp-config.php>
+    Require all denied
+</Files>
+#### marker DISABLE WP-CONFIG ACCESS end ####
+# END WP CLI SECURE
+
+# BEGIN WordPress
+# The directives (lines) between "BEGIN WordPress" and "END WordPress" are
+# dynamically generated, and should only be modified via WordPress filters.
+# Any changes to the directives between these markers will be overwritten.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress
+
+Redirect 301 /events/52/official-closing-of-eu-china-tourism-year/ /closing/
+Redirect 301 /events/52/official-closing-of-eu-china-tourism-year /closing/
+Redirect 301 /events/52/closing/ /closing/
+Redirect 301 /events/52/closing /closing/
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php74” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php74 .php .php7 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit
