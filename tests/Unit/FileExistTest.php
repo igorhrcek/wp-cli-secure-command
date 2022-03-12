@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use Tests\BaseTestCase;
+use WpCliFileManager\Exceptions\FileDoesNotExist;
 use WpCliFileManager\FileManager;
 use Tests\Helpers\FileHelper;
 
