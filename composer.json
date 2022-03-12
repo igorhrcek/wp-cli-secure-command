@@ -1,6 +1,14 @@
 {
-    "name": "igor/wp_cli_file_manager",
-    "description": "A simple file manager for reading and updating various types of files",
+    "name": "igor/wp_cli_secure_command",
+    "description": "Manages WordPress security rules in .htaccess and/or nginx.conf files",
+    "homepage": "https://github.com/igorhrcek/wp-cli-secure-command",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Igor Hrcek",
+            "email": "igor@hrcek.rs"
+        }
+    ],
     "require": {
 
     },
@@ -14,14 +22,11 @@
             "Tests\\": "tests/"
         }
     },
-    "authors": [
-        {
-            "name": "Igor Hrcek",
-            "email": "igor@hrcek.rs"
-        }
-    ],
     "require-dev": {
         "phpunit/phpunit": "^9.5",
         "mikey179/vfsstream": "^1.6"
+    },
+    "support": {
+        "issues": "https://github.com/igorhrcek/wp-cli-secure-command/issues"
     }
 }
