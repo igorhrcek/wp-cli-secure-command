@@ -4,6 +4,8 @@ namespace WP_CLI_Secure;
 
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
+use WP_CLI_Secure\Exceptions\FileIsNotWritable;
+use WP_CLI_Secure\Exceptions\RuleAlreadyExist;
 
 class FileManager {
     /**
@@ -326,19 +328,21 @@ class FileManager {
      *
      * @return bool
      */
-    public function add(array $content, string $marker = '') {
+    public function add(array $content, string $marker = ''): bool {
         //If the rule block already exist, there is no reason to add it again
         if($this->hasRuleBlock($marker)) {
-            new Error(Error::RULE_ALREADY_EXIST);
-        }
-
-        if(!$this->isWritable()) {
-            new Error(Error::FILE_IS_NOT_WRITABLE);
+            throw new(RuleAlreadyExist::class);
+            //new Error(Error::RULE_ALREADY_EXIST);
         }
 
         //Check if file exist?
         if(!$this->fileExist()) {
             $this->createFile();
+        }
+
+        if(!$this->isWritable()) {
+            throw new(FileIsNotWritable::class);
+            //new Error(Error::FILE_IS_NOT_WRITABLE);
         }
 
         //Wrap the rule block with markers

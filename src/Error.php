@@ -2,10 +2,10 @@
 
 namespace WP_CLI_Secure;
 
-//use WpCliFileManager\Exceptions\FileDoesNotExist;
-//use WpCliFileManager\Exceptions\FileIsNotReadable;
-//use WpCliFileManager\Exceptions\FileIsNotWritable;
-//use WpCliFileManager\Exceptions\RuleAlreadyExist;
+use WP_CLI_Secure\Exceptions\FileDoesNotExist;
+use WP_CLI_Secure\Exceptions\FileIsNotReadable;
+use WP_CLI_Secure\Exceptions\FileIsNotWritable;
+use WP_CLI_Secure\Exceptions\RuleAlreadyExist;
 
 class Error {
 

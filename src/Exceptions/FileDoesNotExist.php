@@ -1,6 +1,6 @@
 <?php
 
-namespace WpCliFileManager\Exceptions;
+namespace WP_CLI_Secure\Exceptions;
 
 use Exception;
 
