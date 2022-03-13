@@ -1,11 +1,11 @@
 <?php
 
-namespace WpCliFileManager;
+namespace WP_CLI_Secure;
 
-use WpCliFileManager\Exceptions\FileDoesNotExist;
-use WpCliFileManager\Exceptions\FileIsNotReadable;
-use WpCliFileManager\Exceptions\FileIsNotWritable;
-use WpCliFileManager\Exceptions\RuleAlreadyExist;
+//use WpCliFileManager\Exceptions\FileDoesNotExist;
+//use WpCliFileManager\Exceptions\FileIsNotReadable;
+//use WpCliFileManager\Exceptions\FileIsNotWritable;
+//use WpCliFileManager\Exceptions\RuleAlreadyExist;
 
 class Error {
 

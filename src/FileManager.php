@@ -1,6 +1,6 @@
 <?php
 
-namespace WpCliFileManager;
+namespace WP_CLI_Secure;
 
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
