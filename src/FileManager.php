@@ -331,7 +331,6 @@ class FileManager {
         //If the rule block already exist, there is no reason to add it again
         if($this->hasRuleBlock($marker)) {
             throw new(RuleAlreadyExist::class);
-            //new Error(Error::RULE_ALREADY_EXIST);
         }
 
         //Check if file exist?
@@ -341,7 +340,6 @@ class FileManager {
 
         if(!$this->isWritable()) {
             throw new(FileIsNotWritable::class);
-            //new Error(Error::FILE_IS_NOT_WRITABLE);
         }
 
         //Wrap the rule block with markers
