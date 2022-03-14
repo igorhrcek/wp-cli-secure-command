@@ -4,6 +4,8 @@ namespace WP_CLI_Secure;
 
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
+use WP_CLI_Secure\Exceptions\FileDoesNotExist;
+use WP_CLI_Secure\Exceptions\FileIsNotReadable;
 use WP_CLI_Secure\Exceptions\FileIsNotWritable;
 use WP_CLI_Secure\Exceptions\RuleAlreadyExist;
 
@@ -72,10 +74,15 @@ class FileManager {
      * Set value of file
      *
      * @return array
+     * @throws FileIsNotReadable
      */
     private function setFileContent() : array {
         if(!$this->fileExist()) {
             return [];
+        }
+
+        if(!$this->isReadable()) {
+            throw new (FileIsNotReadable::class);
         }
 
         return $this->read();
@@ -90,14 +97,6 @@ class FileManager {
      * @return array
      */
     public function read(int $startLine = 0, int $lines = null) : array {
-        if(!$this->fileExist()) {
-            new Error(Error::FILE_DOES_NOT_EXIST);
-        }
-
-        if(!$this->isReadable()) {
-            new Error(Error::FILE_IS_NOT_READABLE);
-        }
-
         $result = [];
         $file = new \SplFileObject($this->path);
         $file->seek($startLine);
