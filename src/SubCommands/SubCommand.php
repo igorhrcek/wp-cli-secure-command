@@ -4,6 +4,7 @@ namespace WP_CLI_Secure\SubCommands;
 
 use WP_CLI;
 use WP_CLI_Secure\Exceptions\FileDoesNotExist;
+use WP_CLI_Secure\Exceptions\FileIsNotReadable;
 use WP_CLI_Secure\Exceptions\FileIsNotWritable;
 use WP_CLI_Secure\Exceptions\RuleAlreadyExist;
 use WP_CLI_Secure\FileManager;
@@ -97,6 +98,11 @@ class SubCommand {
      * @return string|array
      */
     private function setRuleContent() : string|array {
+        //Return an empty array in case when the executed command does not require a template
+        if($this->ruleTemplate === '') {
+            return [];
+        }
+
         $templateFilePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Templates' . DIRECTORY_SEPARATOR . $this->serverType . DIRECTORY_SEPARATOR .
             $this->ruleTemplate . '.tpl';
 
@@ -125,19 +131,14 @@ class SubCommand {
         if($this->output) {
             WP_CLI::line($this->ruleContent);
         } else {
-            $fileManager = new FileManager($this->filePath);
-
             try {
+                $fileManager = new FileManager($this->filePath);
                 $result = $fileManager->add($this->ruleContent, $this->ruleName);
 
                 if($result) {
                     WP_CLI::success($this->successMessage);
                 }
-            } catch(FileDoesNotExist $e) {
-                WP_CLI::error($e->getMessage());
-            } catch(RuleAlreadyExist $e) {
-                WP_CLI::error($e->getMessage());
-            } catch(FileIsNotWritable $e) {
+            } catch(FileDoesNotExist|RuleAlreadyExist|FileIsNotWritable|FileIsNotReadable $e) {
                 WP_CLI::error($e->getMessage());
             }
         }
