@@ -362,6 +362,27 @@ class SecureCommand extends WP_CLI_Command {
         (new BlockAccessToXmlRpc($assoc_args))->output();
     }
 
+    /**
+     *  Removes all WP CLI Secure rules
+     *
+     *  Use this command to remove all deployed security rules. If you are using nginx you need to restart it. If you copied rules manually, this command
+     *  will not remove them!
+     *
+     * ## OPTIONS
+     *
+     * [--path=<path>]
+     * : Set a custom path to the file which command should use to write rules into
+     *
+     * [--server=<server>]
+     * : Set a server type. Possible options are "apache" and "nginx". Default is "apache" and all rules are stored in
+     * .htaccess file
+     *
+     * ## EXAMPLES
+     *
+     *     $ wp secure flush
+     *     Success: All security rules have been removed.
+     *
+     */
     public function flush($args, $assoc_args) : void {
         (new Flush($assoc_args))->output();
     }
