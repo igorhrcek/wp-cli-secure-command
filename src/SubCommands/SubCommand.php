@@ -94,7 +94,7 @@ class SubCommand {
      * @return string
      */
     private function setFilePath() : string {
-        return $this->commandArguments['path'] ?? (($this->serverType === 'apache') ? self::APACHE_FILE : self::NGINX_FILE);
+        return $this->commandArguments['file-path'] ?? (($this->serverType === 'apache') ? self::APACHE_FILE : self::NGINX_FILE);
     }
 
     /**
@@ -168,11 +168,9 @@ class SubCommand {
                     }
                 } else {
                     //Add the rule
-                    $result = $fileManager->add($this->ruleContent, $this->ruleName);
+                    $fileManager->add($this->ruleContent, $this->ruleName);
 
-                    if($result) {
-                        WP_CLI::success($this->getOutputMessage('success'));
-                    }
+                    WP_CLI::success($this->getOutputMessage('success'));
                 }
             } catch(FileDoesNotExist|RuleAlreadyExist|FileIsNotWritable|FileIsNotReadable $e) {
                 WP_CLI::error($e->getMessage());

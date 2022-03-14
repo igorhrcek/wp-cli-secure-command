@@ -41,7 +41,7 @@ use WP_CLI_Secure\SubCommands\Flush;
  *     $ wp secure flush
  *
  *     # Add security rule to a custom file
- *     $ wp secure disable-directory-browsing --path=/some/file/path/.htaccess
+ *     $ wp secure disable-directory-browsing --file-path=/some/file/path/.htaccess
  *
  *     # Display the output only (no writing)
  *     $ wp secure disable-directory-browsing --output
@@ -68,7 +68,7 @@ class SecureCommand extends WP_CLI_Command {
      * [--output]
      * : Use this option to display the actual code that you can manually copy and paste into some other file
      *
-     * [--path=<path>]
+     * [--file-path=<path>]
      * : Set a custom path to the file which command should use to write rules into
      *
      * [--server=<server>]
@@ -99,7 +99,7 @@ class SecureCommand extends WP_CLI_Command {
      * [--output]
      * : Use this option to display the actual code that you can manually copy and paste into some other file
      *
-     * [--path=<path>]
+     * [--file-path=<path>]
      * : Set a custom path to the file which command should use to write rules into
      *
      * [--server=<server>]
@@ -131,7 +131,7 @@ class SecureCommand extends WP_CLI_Command {
      * [--output]
      * : Use this option to display the actual code that you can manually copy and paste into some other file
      *
-     * [--path=<path>]
+     * [--file-path=<path>]
      * : Set a custom path to the file which command should use to write rules into
      *
      * [--server=<server>]
@@ -162,7 +162,7 @@ class SecureCommand extends WP_CLI_Command {
      * [--output]
      * : Use this option to display the actual code that you can manually copy and paste into some other file
      *
-     * [--path=<path>]
+     * [--file-path=<path>]
      * : Set a custom path to the file which command should use to write rules into
      *
      * [--server=<server>]
@@ -193,7 +193,7 @@ class SecureCommand extends WP_CLI_Command {
      * [--output]
      * : Use this option to display the actual code that you can manually copy and paste into some other file
      *
-     * [--path=<path>]
+     * [--file-path=<path>]
      * : Set a custom path to the file which command should use to write rules into
      *
      * [--server=<server>]
@@ -223,7 +223,7 @@ class SecureCommand extends WP_CLI_Command {
      * [--output]
      * : Use this option to display the actual code that you can manually copy and paste into some other file
      *
-     * [--path=<path>]
+     * [--file-path=<path>]
      * : Set a custom path to the file which command should use to write rules into
      *
      * [--server=<server>]
@@ -253,7 +253,7 @@ class SecureCommand extends WP_CLI_Command {
      * [--output]
      * : Use this option to display the actual code that you can manually copy and paste into some other file
      *
-     * [--path=<path>]
+     * [--file-path=<path>]
      * : Set a custom path to the file which command should use to write rules into
      *
      * [--server=<server>]
@@ -283,7 +283,7 @@ class SecureCommand extends WP_CLI_Command {
      * [--output]
      * : Use this option to display the actual code that you can manually copy and paste into some other file
      *
-     * [--path=<path>]
+     * [--file-path=<path>]
      * : Set a custom path to the file which command should use to write rules into
      *
      * [--server=<server>]
@@ -314,7 +314,7 @@ class SecureCommand extends WP_CLI_Command {
      * [--output]
      * : Use this option to display the actual code that you can manually copy and paste into some other file
      *
-     * [--path=<path>]
+     * [--file-path=<path>]
      * : Set a custom path to the file which command should use to write rules into
      *
      * [--server=<server>]
@@ -345,7 +345,7 @@ class SecureCommand extends WP_CLI_Command {
      * [--output]
      * : Use this option to display the actual code that you can manually copy and paste into some other file
      *
-     * [--path=<path>]
+     * [--file-path=<path>]
      * : Set a custom path to the file which command should use to write rules into
      *
      * [--server=<server>]
@@ -370,7 +370,7 @@ class SecureCommand extends WP_CLI_Command {
      *
      * ## OPTIONS
      *
-     * [--path=<path>]
+     * [--file-path=<path>]
      * : Set a custom path to the file which command should use to write rules into
      *
      * [--server=<server>]
