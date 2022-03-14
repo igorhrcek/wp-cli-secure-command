@@ -1,4 +1,4 @@
-<files readme.html>
+<Files readme.html>
     <IfModule mod_authz_core.c>
         Require all denied
     </IfModule>
@@ -6,8 +6,9 @@
         Order allow,deny
         Deny from all
     </IfModule>
-</files>
-<files readme.txt>
+</Files>
+
+<Files readme.txt>
     <IfModule mod_authz_core.c>
         Require all denied
     </IfModule>
@@ -15,8 +16,9 @@
         Order allow,deny
         Deny from all
     </IfModule>
-</files>
-<files wp-config.php>
+</Files>
+
+<Files wp-config.php>
     <IfModule mod_authz_core.c>
         Require all denied
     </IfModule>
@@ -24,8 +26,10 @@
         Order allow,deny
         Deny from all
     </IfModule>
-</files>
+</Files>
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteRule ^wp-admin/install\.php$ - [F]
+    RewriteRule ^wp-admin/upgrade\.php$ - [F]
 </IfModule>
