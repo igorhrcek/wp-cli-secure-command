@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit;
+namespace Tests\Unit\FileManager;
 
 use Tests\BaseTestCase;
 use WP_CLI_Secure\FileManager;

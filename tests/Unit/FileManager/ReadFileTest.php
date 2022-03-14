@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit;
+namespace Tests\Unit\FileManager;
 
 use org\bovigo\vfs\vfsStreamFile;
 use Tests\BaseTestCase;

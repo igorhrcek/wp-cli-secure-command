@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\FileManager;
 
 use Tests\BaseTestCase;
 use Tests\Helpers\FileHelper;
