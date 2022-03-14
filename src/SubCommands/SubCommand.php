@@ -46,6 +46,11 @@ class SubCommand {
     public string $successMessage;
 
     /**
+     * @var string Message to output if --remove command execution was successful
+     */
+    public string $removalMessage;
+
+    /**
      * @var array Command line arguments passed as $assoc_args
      */
     private array $commandArguments;
@@ -118,6 +123,24 @@ class SubCommand {
     }
 
     /**
+     * Returns the output message
+     *
+     * @param string $type
+     *
+     * @return string
+     * @todo I am not too happy about this
+     */
+    private function getOutputMessage(string $type = 'success') : string {
+        $message = $this->{$type. 'Message'} ;
+
+        if($this->serverType === 'nginx') {
+            $message .= PHP_EOL . 'Since you are using nginx you need to restart web server manually. If you copied rules manually, this command will have no effect.';
+        }
+
+        return $message;
+    }
+
+    /**
      * Outputs the result of command execution
      *
      * @return void
@@ -135,10 +158,21 @@ class SubCommand {
         } else {
             try {
                 $fileManager = new FileManager($this->filePath);
-                $result = $fileManager->add($this->ruleContent, $this->ruleName);
 
-                if($result) {
-                    WP_CLI::success($this->successMessage);
+                if(isset($this->commandArguments['remove']) && $this->commandArguments['remove'] === true) {
+                    //We need to remove the rule from file
+                    $result = $fileManager->remove($this->ruleName);
+
+                    if($result) {
+                        WP_CLI::success($this->getOutputMessage('removal'));
+                    }
+                } else {
+                    //Add the rule
+                    $result = $fileManager->add($this->ruleContent, $this->ruleName);
+
+                    if($result) {
+                        WP_CLI::success($this->getOutputMessage('success'));
+                    }
                 }
             } catch(FileDoesNotExist|RuleAlreadyExist|FileIsNotWritable|FileIsNotReadable $e) {
                 WP_CLI::error($e->getMessage());
