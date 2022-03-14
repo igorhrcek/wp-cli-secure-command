@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use Tests\BaseTestCase;
-use WpCliFileManager\FileManager;
+use WP_CLI_Secure\FileManager;
 use Tests\Helpers\FileHelper;
 
 final class FileWritableTest extends BaseTestCase {

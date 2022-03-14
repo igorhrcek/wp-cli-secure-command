@@ -4,8 +4,8 @@ namespace Tests\Unit;
 
 use Tests\BaseTestCase;
 use Tests\Helpers\FileHelper;
-use WpCliFileManager\Exceptions\FileDoesNotExist;
-use WpCliFileManager\FileManager;
+use WP_CLI_Secure\Exceptions\FileDoesNotExist;
+use WP_CLI_Secure\FileManager;
 
 class CreateFileTest extends BaseTestCase {
     public function testItWillCreateFileOnGivenPath() : void {

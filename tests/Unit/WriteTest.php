@@ -4,9 +4,9 @@ namespace Tests\Unit;
 
 use Tests\BaseTestCase;
 use Tests\Helpers\FileHelper;
-use WpCliFileManager\Exceptions\FileIsNotWritable;
-use WpCliFileManager\Exceptions\RuleAlreadyExist;
-use WpCliFileManager\FileManager;
+use WP_CLI_Secure\Exceptions\FileIsNotWritable;
+use WP_CLI_Secure\Exceptions\RuleAlreadyExist;
+use WP_CLI_Secure\FileManager;
 
 class WriteTest extends BaseTestCase {
     protected array $rules = [

@@ -6,9 +6,9 @@ namespace Tests\Unit;
 
 use org\bovigo\vfs\vfsStreamFile;
 use Tests\BaseTestCase;
-use WpCliFileManager\Exceptions\FileDoesNotExist;
-use WpCliFileManager\Exceptions\FileIsNotReadable;
-use WpCliFileManager\FileManager;
+use WP_CLI_Secure\Exceptions\FileDoesNotExist;
+use WP_CLI_Secure\Exceptions\FileIsNotReadable;
+use WP_CLI_Secure\FileManager;
 use Tests\Helpers\FileHelper;
 
 final class ReadFileTest extends BaseTestCase {
@@ -37,13 +37,6 @@ final class ReadFileTest extends BaseTestCase {
 
         $fileContent = $fileManager->read();
         $this->assertIsArray($fileContent);
-    }
-
-    public function testItShouldReturnExceptionIfFileDoesNotExist() : void {
-        $this->expectException(FileDoesNotExist::class);
-
-        $fileManager = new FileManager('/this/does/not/exist.txt');
-        $fileManager->read();
     }
 
     public function testItShouldReturnExceptionIfFileIsNotReadable() : void {

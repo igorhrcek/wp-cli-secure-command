@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use Tests\BaseTestCase;
 use Tests\Helpers\FileHelper;
-use WpCliFileManager\FileManager;
+use WP_CLI_Secure\FileManager;
 
 final class ExtractTest extends BaseTestCase {
     /**

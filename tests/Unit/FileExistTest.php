@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use Tests\BaseTestCase;
-use WpCliFileManager\Exceptions\FileDoesNotExist;
-use WpCliFileManager\FileManager;
+use WP_CLI_Secure\Exceptions\FileDoesNotExist;
+use WP_CLI_Secure\FileManager;
 use Tests\Helpers\FileHelper;
 
 final class FileExistTest extends BaseTestCase {
