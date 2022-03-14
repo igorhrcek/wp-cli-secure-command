@@ -1,0 +1,29 @@
+---
+name: Release
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+jobs:
+  release:
+    name: Create a new release
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/mint-hosting/container-semantic-versioning/semantic-versioning:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.CONTAINER_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Create new release
+        run: |
+          npx semantic-release
