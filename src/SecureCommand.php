@@ -16,6 +16,7 @@ use WP_CLI_Secure\SubCommands\BlockPhpExecutionInThemes;
 use WP_CLI_Secure\SubCommands\BlockPhpExecutionInUploads;
 use WP_CLI_Secure\SubCommands\BlockPhpExecutionInWpIncludes;
 use WP_CLI_Secure\SubCommands\DisableDirectoryBrowsing;
+use WP_CLI_Secure\SubCommands\Flush;
 
 /**
  * Adds or removes security rules to .htaccess or nginx.conf to strengthen security of the WordPress installation
@@ -359,5 +360,9 @@ class SecureCommand extends WP_CLI_Command {
      */
     public function block_access_to_xmlrpc($args, $assoc_args) : void {
         (new BlockAccessToXmlRpc($assoc_args))->output();
+    }
+
+    public function flush($args, $assoc_args) : void {
+        (new Flush($assoc_args))->output();
     }
 }
