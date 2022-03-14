@@ -106,17 +106,13 @@ class SubCommand {
         $templateFilePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Templates' . DIRECTORY_SEPARATOR . $this->serverType . DIRECTORY_SEPARATOR .
             $this->ruleTemplate . '.tpl';
 
-        if($this->output) {
-            $result = file_get_contents($templateFilePath);
-        } else {
-            $result = [];
-            $file = new \SplFileObject($templateFilePath);
-            while(!$file->eof()) {
-                $result[] = rtrim($file->current(), "\n");
-                $file->next();
-            }
-            unset($file);
+        $result = [];
+        $file = new \SplFileObject($templateFilePath);
+        while(!$file->eof()) {
+            $result[] = rtrim($file->current(), "\n");
+            $file->next();
         }
+        unset($file);
 
         return $result;
     }
@@ -129,7 +125,13 @@ class SubCommand {
      */
     public function output() {
         if($this->output) {
-            WP_CLI::line($this->ruleContent);
+            try {
+                $fileManager = new FileManager($this->filePath);
+                $content = $fileManager->wrap($this->ruleContent, 'block', $this->ruleName);
+                WP_CLI::line(implode(PHP_EOL, $content));
+            } catch(FileDoesNotExist|RuleAlreadyExist|FileIsNotWritable|FileIsNotReadable $e) {
+                WP_CLI::error($e->getMessage());
+            }
         } else {
             try {
                 $fileManager = new FileManager($this->filePath);
