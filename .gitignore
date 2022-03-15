@@ -4,3 +4,4 @@ vendor/
 .htaccess
 nginx.conf
 .DS_Store
+wp/
