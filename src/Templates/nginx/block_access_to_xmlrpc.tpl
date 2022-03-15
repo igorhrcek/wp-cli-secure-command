@@ -1,3 +1,3 @@
-location ~ /xmlrpc.php$ {
+location ~ /xmlrpc\.php$ {
     deny all;
 }
