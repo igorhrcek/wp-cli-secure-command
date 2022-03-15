@@ -3,3 +3,4 @@ vendor/
 .phpunit.result.cache
 .htaccess
 nginx.conf
+.DS_Store
