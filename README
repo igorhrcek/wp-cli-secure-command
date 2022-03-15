@@ -1,7 +1,7 @@
 # wp-cli/secure-command
 Manages common security aspects of WordPress. Supports nginx and Apache.
 
-## Basic Usage
+##Basic Usage
 This package implements the following commands:
 
 *wp secure block_access_to_htaccess*
