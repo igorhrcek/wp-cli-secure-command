@@ -386,4 +386,21 @@ class SecureCommand extends WP_CLI_Command {
     public function flush($args, $assoc_args) : void {
         (new Flush($assoc_args))->output();
     }
+
+    /**
+     * Verifies WordPress files against WordPress.org's checksums.
+     *
+     * Downloads md5 checksums for the current version from WordPress.org, and
+     * compares those checksums against the currently installed files.
+     *
+     * It also returns a list of files that shouldn't be part of default WordPress installation.
+     *
+     * @param $args
+     * @param $assoc_args
+     *
+     * @return void
+     */
+    public function integrityscan($args, $assoc_args) : void {
+        WP_CLI::runcommand('core verify-checksums');
+    }
 }
