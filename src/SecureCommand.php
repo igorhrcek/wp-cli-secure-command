@@ -80,6 +80,7 @@ class SecureCommand extends WP_CLI_Command {
      *     $ wp secure disable_directory_browsing
      *     Success: Directory Browsing security rule is now active.
      *
+     * @when before_wp_load
      */
     public function disable_directory_browsing($args, $assoc_args) : void {
         (new DisableDirectoryBrowsing($assoc_args))->output();
@@ -111,6 +112,7 @@ class SecureCommand extends WP_CLI_Command {
      *     $ wp secure block_php_execution_in_themes
      *     Success: Block Execution In Themes rule has been deployed.
      *
+     * @when before_wp_load
      */
     public function block_php_execution_in_themes($args, $assoc_args) : void {
         (new BlockPhpExecutionInThemes($assoc_args))->output();
@@ -143,6 +145,7 @@ class SecureCommand extends WP_CLI_Command {
      *     $ wp secure block_php_execution_in_uploads
      *     Success: Block Execution In Uploads Directory rule has been deployed.
      *
+     * @when before_wp_load
      */
     public function block_php_execution_in_uploads($args, $assoc_args) : void {
         (new BlockPhpExecutionInUploads($assoc_args))->output();
@@ -174,6 +177,7 @@ class SecureCommand extends WP_CLI_Command {
      *     $ wp secure block_php_execution_in_plugins
      *     Success: Block Execution In Plugins Directory rule has been deployed.
      *
+     * @when before_wp_load
      */
     public function block_php_execution_in_plugins($args, $assoc_args) : void {
         (new BlockPhpExecutionInPlugins($assoc_args))->output();
@@ -205,6 +209,7 @@ class SecureCommand extends WP_CLI_Command {
      *     $ wp secure block_php_execution_in_wp_includes
      *     Success: Block Execution In wp-includes Directory rule has been deployed.
      *
+     * @when before_wp_load
      */
     public function block_php_execution_in_wp_includes($args, $assoc_args) : void {
         (new BlockPhpExecutionInWpIncludes($assoc_args))->output();
@@ -235,6 +240,7 @@ class SecureCommand extends WP_CLI_Command {
      *     $ wp secure block_access_to_sensitive_files
      *     Success: Block Access to Sensitive Files rule has been deployed.
      *
+     * @when before_wp_load
      */
     public function block_access_to_sensitive_files($args, $assoc_args): void {
         (new BlockAccessToSensitiveFiles($assoc_args))->output();
@@ -265,6 +271,7 @@ class SecureCommand extends WP_CLI_Command {
      *     $ wp secure block_access_to_sensitive_directories
      *     Success: Block Access to Sensitive Directories rule has been deployed.
      *
+     * @when before_wp_load
      */
     public function block_access_to_sensitive_directories($args, $assoc_args) : void {
         (new BlockAccessToSensitiveDirectories($assoc_args))->output();
@@ -295,6 +302,7 @@ class SecureCommand extends WP_CLI_Command {
      *     $ wp secure block_access_to_htaccess
      *     Success: Block Access to .htaccess rule has been deployed
      *
+     * @when before_wp_load
      */
     public function block_access_to_htaccess($args, $assoc_args): void {
         (new BlockAccessToHtaccess($assoc_args))->output();
@@ -326,6 +334,7 @@ class SecureCommand extends WP_CLI_Command {
      *     $ wp secure block_author_scanning
      *     Success: Block Author Scanning rule has been deployed.
      *
+     * @when before_wp_load
      */
     public function block_author_scanning($args, $assoc_args) : void {
         (new BlockAuthorScanning($assoc_args))->output();
@@ -357,6 +366,7 @@ class SecureCommand extends WP_CLI_Command {
      *     $ wp secure block_author_scanning
      *     Success: Block Author Scanning rule has been deployed.
      *
+     * @when before_wp_load
      */
     public function block_access_to_xmlrpc($args, $assoc_args) : void {
         (new BlockAccessToXmlRpc($assoc_args))->output();
@@ -382,6 +392,7 @@ class SecureCommand extends WP_CLI_Command {
      *     $ wp secure flush
      *     Success: All security rules have been removed.
      *
+     * @when before_wp_load
      */
     public function flush($args, $assoc_args) : void {
         (new Flush($assoc_args))->output();
@@ -399,6 +410,8 @@ class SecureCommand extends WP_CLI_Command {
      * @param $assoc_args
      *
      * @return void
+     *
+     * @when before_wp_load
      */
     public function integrityscan($args, $assoc_args) : void {
         WP_CLI::runcommand('core verify-checksums');
