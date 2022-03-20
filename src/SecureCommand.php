@@ -87,71 +87,6 @@ class SecureCommand extends WP_CLI_Command {
     }
 
     /**
-     * Disables execution of PHP files in Themes.
-     *
-     *  PHP files in themes directory shouldn't be directly accessible. This is important in case of malware injection as it prevents attacker from directly
-     *  accessing infected PHP files
-     *
-     * ## OPTIONS
-     *
-     * [--remove]
-     * : Removes the rule from .htaccess or nginx.conf.
-     *
-     * [--output]
-     * : Use this option to display the actual code that you can manually copy and paste into some other file
-     *
-     * [--file-path=<path>]
-     * : Set a custom path to the file which command should use to write rules into
-     *
-     * [--server=<server>]
-     * : Set a server type. Possible options are "apache" and "nginx". Default is "apache" and all rules are stored in
-     * .htaccess file
-     *
-     * ## EXAMPLES
-     *
-     *     $ wp secure block_php_execution_in_themes
-     *     Success: Block Execution In Themes rule has been deployed.
-     *
-     * @when before_wp_load
-     */
-    public function block_php_execution_in_themes($args, $assoc_args) : void {
-        (new BlockPhpExecutionInThemes($assoc_args))->output();
-    }
-
-    /**
-     * Disables execution of PHP files in Uploads.
-     *
-     *  PHP files in `wp-content/uploads` directory shouldn't be directly accessible. This is important in case of malware injection as it prevents attacker from
-     * directly
-     *  accessing infected PHP files
-     *
-     * ## OPTIONS
-     *
-     * [--remove]
-     * : Removes the rule from .htaccess or nginx.conf.
-     *
-     * [--output]
-     * : Use this option to display the actual code that you can manually copy and paste into some other file
-     *
-     * [--file-path=<path>]
-     * : Set a custom path to the file which command should use to write rules into
-     *
-     * [--server=<server>]
-     * : Set a server type. Possible options are "apache" and "nginx". Default is "apache" and all rules are stored in
-     * .htaccess file
-     *
-     * ## EXAMPLES
-     *
-     *     $ wp secure block_php_execution_in_uploads
-     *     Success: Block Execution In Uploads Directory rule has been deployed.
-     *
-     * @when before_wp_load
-     */
-    public function block_php_execution_in_uploads($args, $assoc_args) : void {
-        (new BlockPhpExecutionInUploads($assoc_args))->output();
-    }
-
-    /**
      * Disables execution of PHP files in Plugins.
      *
      *  PHP files in `wp-content/plugins` directory shouldn't be directly accessible. This is important in case of malware injection as it prevents attacker
@@ -159,6 +94,9 @@ class SecureCommand extends WP_CLI_Command {
      *
      * ## OPTIONS
      *
+     * <block-part>
+     * : Required. accepts: plugins, uploads, includes, themes or all.
+     *
      * [--remove]
      * : Removes the rule from .htaccess or nginx.conf.
      *
@@ -174,45 +112,47 @@ class SecureCommand extends WP_CLI_Command {
      *
      * ## EXAMPLES
      *
-     *     $ wp secure block_php_execution_in_plugins
+     *     # Apply the block rules for plugins
+     *     $ wp secure block-php plugins
+     *     Success: Block Execution In Plugins Directory rule has been deployed.
+     *
+     *     # Apply the block rules for all parts.
+     *     $ wp secure block-php all
      *     Success: Block Execution In Plugins Directory rule has been deployed.
      *
      * @when before_wp_load
+     *
+     * @subcommand block-php
      */
-    public function block_php_execution_in_plugins($args, $assoc_args) : void {
-        (new BlockPhpExecutionInPlugins($assoc_args))->output();
-    }
+    public function block_php($args, $assoc_args) : void {
 
-    /**
-     * Disables execution of PHP files in wp-includes directory.
-     *
-     *  PHP files in `wp-includes` directory shouldn't be directly accessible. This is important in case of malware injection as it prevents attacker
-     *  from directly accessing infected PHP files
-     *
-     * ## OPTIONS
-     *
-     * [--remove]
-     * : Removes the rule from .htaccess or nginx.conf.
-     *
-     * [--output]
-     * : Use this option to display the actual code that you can manually copy and paste into some other file
-     *
-     * [--file-path=<path>]
-     * : Set a custom path to the file which command should use to write rules into
-     *
-     * [--server=<server>]
-     * : Set a server type. Possible options are "apache" and "nginx". Default is "apache" and all rules are stored in
-     * .htaccess file
-     *
-     * ## EXAMPLES
-     *
-     *     $ wp secure block_php_execution_in_wp_includes
-     *     Success: Block Execution In wp-includes Directory rule has been deployed.
-     *
-     * @when before_wp_load
-     */
-    public function block_php_execution_in_wp_includes($args, $assoc_args) : void {
-        (new BlockPhpExecutionInWpIncludes($assoc_args))->output();
+		$block_part = $args[0];
+
+	    // Failure first.
+	    if ( ! in_array( $block_part,
+		    array( 'plugins', 'uploads', 'includes', 'themes', 'all' ),
+		    true )
+	    ) {
+		    WP_CLI::error( sprintf( 'Invalid block part "%s" was provided. Allowed values are "plugins", "uploads", "includes", "themes" or "all"',
+			    $block_part ) );
+	    }
+
+	    if ( 'all' === $block_part || 'plugins' === $block_part ) {
+		    var_dump( __LINE__ );
+		    ( new BlockPhpExecutionInPlugins( $assoc_args ) )->output();
+	    }
+	    if ( 'all' === $block_part || 'uploads' === $block_part ) {
+		    var_dump( __LINE__ );
+		    ( new BlockPhpExecutionInWpIncludes( $assoc_args ) )->output();
+	    }
+	    if ( 'all' === $block_part || 'includes' === $block_part ) {
+		    var_dump( __LINE__ );
+		    ( new BlockPhpExecutionInUploads( $assoc_args ) )->output();
+	    }
+	    if ( 'all' === $block_part || 'themes' === $block_part ) {
+		    var_dump( __LINE__ );
+		    ( new BlockPhpExecutionInThemes( $assoc_args ) )->output();
+	    }
     }
 
     /**
