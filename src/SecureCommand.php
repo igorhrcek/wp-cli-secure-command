@@ -33,7 +33,7 @@ use WP_CLI_Secure\SubCommands\Flush;
  *     Success: Directory Browsing is disabled.
  *
  *     # Remove security rule
- *     $ wp secure disable-directory-browsing --disable
+ *     $ wp secure disable-directory-browsing --remove
  *     Success: Directory Browsing is enabled.
  *
  *     # Remove all security rules
@@ -76,11 +76,10 @@ class SecureCommand extends WP_CLI_Command {
      *
      * ## EXAMPLES
      *
-     *     $ wp secure disable_directory_browsing
+     *     $ wp secure disable-directory-browsing
      *     Success: Directory Browsing security rule is now active.
      *
      * @subcommand disable-directory-browsing
-     *
      * @when before_wp_load
      */
     public function disable_directory_browsing($args, $assoc_args) : void {
@@ -88,15 +87,14 @@ class SecureCommand extends WP_CLI_Command {
     }
 
     /**
-     * Disables execution of PHP files in Plugins.
+     * Disables execution of PHP files in Plugins, Uploads, Themes and wp-includes.
      *
-     *  PHP files in `wp-content/plugins` directory shouldn't be directly accessible. This is important in case of malware injection as it prevents attacker
-     *  from directly accessing infected PHP files
+     *  PHP files in certain directories shouldn't be directly accessible. This is important in case of malware injection as it prevents attacker from directly accessing infected PHP files
      *
      * ## OPTIONS
      *
-     * <block-part>
-     * : Required. accepts: plugins, uploads, includes, themes or all.
+     * <what-to-block>
+     * : Required. Accepts: plugins, uploads, includes, themes or all.
      *
      * [--remove]
      * : Removes the rule from .htaccess or nginx.conf.
@@ -113,20 +111,17 @@ class SecureCommand extends WP_CLI_Command {
      *
      * ## EXAMPLES
      *
-     *     # Apply the block rules for plugins
+     *     # Apply the block rules for plugins directory
      *     $ wp secure block-php plugins
      *     Success: Block Execution In Plugins Directory rule has been deployed.
      *
-     *     # Apply the block rules for all parts.
+     *     # Apply the block rules for all directories
      *     $ wp secure block-php all
-     *     Success: Block Execution In Plugins Directory rule has been deployed.
-     *
-     * @when before_wp_load
      *
      * @subcommand block-php-execution
+     * @when before_wp_load
      */
     public function block_php($args, $assoc_args) : void {
-
 		$block_part = $args[0];
 
 	    // Failure first.
@@ -163,7 +158,7 @@ class SecureCommand extends WP_CLI_Command {
      *
      * ## OPTIONS
      *
-     * <block-part>
+     * <what-to-block>
      * : This option is required. Accepts one of the following values: sensitive-files, sensitive-directories, htaccess, xmlrpc or all.
      *
      * [--remove]
@@ -192,34 +187,44 @@ class SecureCommand extends WP_CLI_Command {
      *     $ wp secure block-access all
      *     Success: Block Access to Sensitive Files rule has been deployed.
      *
-     * @subcommand block-access
+     *     # Block custom files and directories
+     *     $ wp secure block-access custom --files=dump.sql --directories=some/directory
+     *     Success: Block Access to Sensitive Files rule has been deployed.
      *
+     * @subcommand block-access
      * @when before_wp_load
      */
     public function block_access($args, $assoc_args): void {
-	    $block_part = $args[0];
+	    $blockPart = $args[0];
+
+        $allowedSubArguments = [
+            'sensitive-files', 'sensitive-directories', 'htaccess', 'xmlrpc', 'all', 'custom'
+        ];
 
 	    // Failure first.
-	    if ( ! in_array( $block_part, array( 'sensitive-files', 'sensitive-directories', 'htaccess', 'xmlrpc', 'all' ), true ) ) {
-		    WP_CLI::error( sprintf( 'Invalid block part "%s" was provided. Allowed values are "files", "directories", "htaccess", "xmlrpc" or "all"', $block_part ) );
+	    if(!in_array( $blockPart, $allowedSubArguments, true)) {
+		    WP_CLI::error(sprintf('Invalid block part "%s" was provided. Allowed values are ' . implode(', ', $allowedSubArguments), $blockPart));
 	    }
 
-	    if ( 'all' === $block_part || 'sensitive-files' === $block_part ) {
-			 WP_CLI::debug( 'Blocking access to the sensitive files.', 'secure');
+        if(in_array($blockPart, ['all', 'custom', 'sensitive-files'])) {
+            WP_CLI::debug('Blocking access to the sensitive files.', 'secure');
             (new BlockAccessToSensitiveFiles($assoc_args))->output();
-	    }
-	    if ( 'all' === $block_part || 'sensitive-directories' === $block_part ) {
-		    WP_CLI::debug( 'Blocking access to the directories.', 'secure');
-		    ( new BlockAccessToSensitiveDirectories( $assoc_args ) )->output();
-	    }
-	    if ( 'all' === $block_part || 'htaccess' === $block_part ) {
-			 WP_CLI::debug( 'Blocking access to the htaccess.', 'secure');
-		    (new BlockAccessToHtaccess($assoc_args))->output();
-	    }
-	    if ( 'all' === $block_part || 'xmlrpc' === $block_part ) {
-			 WP_CLI::debug( 'Blocking access to the xmlrpc.', 'secure');
-		    (new BlockAccessToXmlRpc($assoc_args))->output();
-	    }
+        }
+
+        if(in_array($blockPart, ['all', 'custom', 'sensitive-directories'])) {
+            WP_CLI::debug('Blocking access to the directories.', 'secure');
+            (new BlockAccessToSensitiveDirectories($assoc_args))->output();
+        }
+
+        if(in_array($blockPart, ['all', 'htaccess'])) {
+            WP_CLI::debug('Blocking access to the htaccess.', 'secure');
+            (new BlockAccessToHtaccess($assoc_args))->output();
+        }
+
+        if(in_array($blockPart, ['all', 'xmlrpc'])) {
+            WP_CLI::debug('Blocking access to the xmlrpc.', 'secure');
+            (new BlockAccessToXmlRpc($assoc_args))->output();
+        }
     }
 
     /**
