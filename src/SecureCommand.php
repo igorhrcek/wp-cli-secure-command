@@ -320,7 +320,7 @@ class SecureCommand extends WP_CLI_Command {
     public function enable_file_editor() : void {
         WP_CLI::runcommand('config set DISALLOW_FILE_EDIT false');
     }
-}
+
      /**
      *  Fix all directory and file permissions of the wordpress installation
      *
