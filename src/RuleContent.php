@@ -21,6 +21,11 @@ class RuleContent {
      * @return bool
      */
     public function getContent() : array {
+
+        if ( empty( $this->templateVars ) ) {
+            return $this->content;
+        }
+
         $result = '';
         $templateContent = implode( PHP_EOL, $this->content );
 
