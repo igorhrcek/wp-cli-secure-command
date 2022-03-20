@@ -14,6 +14,7 @@ use WP_CLI_Secure\SubCommands\BlockPhpExecutionInThemes;
 use WP_CLI_Secure\SubCommands\BlockPhpExecutionInUploads;
 use WP_CLI_Secure\SubCommands\BlockPhpExecutionInWpIncludes;
 use WP_CLI_Secure\SubCommands\DisableDirectoryBrowsing;
+use WP_CLI_Secure\SubCommands\FixFileAndDirPermissions;
 use WP_CLI_Secure\SubCommands\Flush;
 
 /**
@@ -300,5 +301,41 @@ class SecureCommand extends WP_CLI_Command {
      */
     public function integrityscan($args, $assoc_args) : void {
         WP_CLI::runcommand('core verify-checksums');
+    }
+
+    /**
+     * Disable the file editor in Wordpress.
+     *
+     * @return void
+     */
+    public function disable_file_editor() : void {
+        WP_CLI::runcommand('config set DISALLOW_FILE_EDIT true');
+    }
+
+    /**
+     * Enable the file editor in Wordpress.
+     *
+     * @return void
+     */
+    public function allow_file_editor() : void {
+        WP_CLI::runcommand('config set DISALLOW_FILE_EDIT false');
+    }
+}
+     /**
+     *  Fix all directory and file permissions of the wordpress installation
+     *
+     *  Use this command to verify that the permissions of all files and directories are set according the wordpress recommendations.
+     *  IMPORTANT: Don't use this command if you don't know what you are doing here!
+     *
+     * ## EXAMPLES
+     *
+     *     $ wp secure fix_permissions
+     *     Success: All permission are reset to wordpress default.
+     *
+     * @when before_wp_load
+     */
+    public function fix_permissions($args, $assoc_args) : void {
+        (new FixFileAndDirPermissions($assoc_args))->fixPermissions();
+        WP_CLI::success("Permission successfully updated.");
     }
 }

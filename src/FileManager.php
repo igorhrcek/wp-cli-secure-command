@@ -203,7 +203,7 @@ class FileManager {
      *
      * @param string $needle
      *
-     * @return int|bool
+     * @return bool|int|string
      */
     private function findInFile(string $needle) {
         return array_search($needle, $this->file);

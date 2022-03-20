@@ -95,6 +95,24 @@ Removes all security rules.
 wp secure flush
 ```
 
+### wp secure disable-file-editor
+
+Disables the Wordpress file editor. It could be used to edit arbitrary files using the web interface.
+This makes it easier for attackers to change files on the server using a web browser.
+We suggest to disable the file editor off.
+
+```
+wp secure disable-file-editor
+```
+
+### wp secure enable-file-editor
+
+Enables the Wordpress file editor. See wp secure disable-file-editor.
+
+```
+wp secure enable-file-editor
+```
+
 ## Global options
 
 ### Remove single security rule
