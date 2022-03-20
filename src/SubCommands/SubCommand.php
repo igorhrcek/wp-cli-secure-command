@@ -120,10 +120,11 @@ class SubCommand {
         }
         unset($file);
 
+        //Combine templates and command arguments, if any
+        //This is used for block-access command
         $result = new RuleContent( $result, $this->getTemplateVars() );
-        $result = $result->getContent();
 
-        return $result;
+        return $result->getContent();
     }
 
     /**
@@ -131,7 +132,7 @@ class SubCommand {
      *
      * @return array
      */
-    public function getTemplateVars() {
+    public function getTemplateVars(): array {
         return [];
     }
 
@@ -161,30 +162,30 @@ class SubCommand {
      */
     public function output() {
 	    try {
-		    $fileManager = new FileManager( $this->filePath );
-		    if ( $this->output ) {
-			    $content     = $fileManager->wrap( $this->ruleContent, 'block', $this->ruleName );
+		    $fileManager = new FileManager($this->filePath);
+		    if ($this->output) {
+			    $content = $fileManager->wrap($this->ruleContent, 'block', $this->ruleName);
 			    WP_CLI::line( implode( PHP_EOL, $content ) );
 		    } else {
-			    if ( isset( $this->commandArguments['remove'] ) && $this->commandArguments['remove'] === true ) {
+			    if (isset($this->commandArguments['remove']) && $this->commandArguments['remove'] === true) {
 				    //We need to remove the rule from file
-				    $result = $fileManager->remove( $this->ruleName );
+				    $result = $fileManager->remove($this->ruleName);
 
-				    if ( $result ) {
-					    WP_CLI::success( $this->getOutputMessage( 'removal' ) );
+				    if ($result) {
+					    WP_CLI::success($this->getOutputMessage('removal'));
 				    }
 			    } else {
 				    //Add the rule
-				    $fileManager->add( $this->ruleContent, $this->ruleName );
+				    $fileManager->add($this->ruleContent, $this->ruleName);
 
-				    WP_CLI::success( $this->getOutputMessage( 'success' ) );
+				    WP_CLI::success($this->getOutputMessage('success'));
 			    }
 
 		    }
-	    } catch ( FileDoesNotExist | FileIsNotWritable | FileIsNotReadable $e ) {
-		    WP_CLI::error( $e->getMessage() );
-	    } catch ( RuleAlreadyExist $e ) {
-		    WP_CLI::warning( $e->getMessage() );
+	    } catch (FileDoesNotExist | FileIsNotWritable | FileIsNotReadable $e) {
+		    WP_CLI::error($e->getMessage());
+	    } catch (RuleAlreadyExist $e) {
+		    WP_CLI::warning($e->getMessage());
 	    }
     }
 }

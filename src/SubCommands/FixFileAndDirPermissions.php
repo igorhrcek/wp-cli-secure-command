@@ -19,12 +19,12 @@ class FixFileAndDirPermissions {
      * @return bool
      */
     public function fixPermissions() : bool {
+        //Stop execution if ABSPATH is not defined to prevent changing permissions in the wrong place
         if(!defined('ABSPATH')) {
             return false;
         }
 
         $iterator = new \RecursiveDirectoryIterator(ABSPATH);
-
         foreach($iterator as $file) {
             chmod($file, is_file($file) ? $this->filePermissions : $this->directoryPermissions);
         }
