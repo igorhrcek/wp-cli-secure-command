@@ -37,25 +37,30 @@ class SecurityHeaders extends SubCommand {
   }
 
   public function getTemplateVars() {
-      $user_headers = isset( $this->commandArguments['headers'] ) ? $this->commandArguments['headers'] : 'x-content-type-options,x-frame-options,x-xss-protection,Strict-Transport-Security,hsts,referrer-policy';
+    $user_headers = isset( $this->commandArguments['headers'] ) ? $this->commandArguments['headers'] : 'x-content-type-options,x-frame-options,x-xss-protection,hsts,referrer-policy';
 
-      //$headers = $this->GetHeaders();
+    if ( ! empty( $user_headers ) ) {
+      $user_headers = explode( ',', $user_headers );
+      $user_headers = array_map( 'trim', $user_headers );
 
-      if ( ! empty( $user_headers ) ) {
-          $user_headers = explode( ',', $user_headers );
-          $user_headers = array_map( 'trim', $user_headers );
-          return [
-              'header' => $user_headers,
-
-          ];
+      // special case: hsts is actually Strict-Transport-Security
+      if( array_key_exists( 'hsts', $user_headers ) ) {
+        $keys = array_keys( $user_headers );
+        $keys[ array_search( 'hsts', $keys) ] = 'Strict-Transport-Security';
+        array_combine($keys, $arr);
       }
-      return [];
+
+      return [
+        'header' => $user_headers,
+      ];
+    }
+    return [];
   }
 
   // Return a list of missing security headers
   public function GetHeaders(){
 
-    $headers = ScanHeaders( 'plain' );
+    $headers = $this->ScanHeaders( 'plain' );
 
     // Security headers we would like to set
     $security_headers = [
@@ -66,9 +71,9 @@ class SecurityHeaders extends SubCommand {
       'referrer-policy' => 'strict-origin-when-cross-origin',
     ];
 
-//
+    //
 
-//
+    //
     // List the missing headers we can implement
     $new_headers = array_diff( $security_headers, $headers );
     return $new_headers;
