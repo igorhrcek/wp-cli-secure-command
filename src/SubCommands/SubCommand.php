@@ -11,7 +11,7 @@ use WP_CLI_Secure\FileManager;
 
 class SubCommand {
     /**
-     * @var bool Defines if output will be written to a file our to a stdout
+     * @var bool Defines if output will be written to a file or to the stdout
      */
     public bool $output;
 
