@@ -4,7 +4,7 @@ Manages common security aspects of WordPress. Supports nginx and Apache.
 ## Basic Usage
 This package implements the following commands:
 
-**wp secure block-access**
+## wp secure block-access
 
 Blocks direct access to sensitive files and directories:
 `readme.txt`, `readme.html`, `xmlrpc.php`, `wp-config.php`, `wp-admin/install.php`, `wp-admin/upgrade.php`, `.git`, `svn`, `cache` and `vendors`
