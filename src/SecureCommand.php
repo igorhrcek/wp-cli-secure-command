@@ -79,6 +79,8 @@ class SecureCommand extends WP_CLI_Command {
      *     $ wp secure disable_directory_browsing
      *     Success: Directory Browsing security rule is now active.
      *
+     * @subcommand disable-directory-browsing
+     *
      * @when before_wp_load
      */
     public function disable_directory_browsing($args, $assoc_args) : void {
@@ -121,7 +123,7 @@ class SecureCommand extends WP_CLI_Command {
      *
      * @when before_wp_load
      *
-     * @subcommand block-php
+     * @subcommand block-php-execution
      */
     public function block_php($args, $assoc_args) : void {
 
@@ -129,7 +131,7 @@ class SecureCommand extends WP_CLI_Command {
 
 	    // Failure first.
 	    if ( ! in_array( $block_part,
-		    array( 'plugins', 'uploads', 'includes', 'themes', 'all' ),
+		    array( 'plugins', 'uploads', 'wp-includes', 'themes', 'all' ),
 		    true )
 	    ) {
 		    WP_CLI::error( sprintf( 'Invalid block part "%s" was provided. Allowed values are "plugins", "uploads", "includes", "themes" or "all"',
@@ -142,11 +144,11 @@ class SecureCommand extends WP_CLI_Command {
 	    }
 	    if ( 'all' === $block_part || 'uploads' === $block_part ) {
 		    WP_CLI::debug( 'Securing the uploads folder.', 'secure');
-		    ( new BlockPhpExecutionInWpIncludes( $assoc_args ) )->output();
-	    }
-	    if ( 'all' === $block_part || 'includes' === $block_part ) {
-		    WP_CLI::debug( 'Securing the includes folder.', 'secure');
 		    ( new BlockPhpExecutionInUploads( $assoc_args ) )->output();
+	    }
+	    if ( 'all' === $block_part || 'wp-includes' === $block_part ) {
+		    WP_CLI::debug( 'Securing the includes folder.', 'secure');
+		    ( new BlockPhpExecutionInWpIncludes( $assoc_args ) )->output();
 	    }
 	    if ( 'all' === $block_part || 'themes' === $block_part ) {
 		    WP_CLI::debug( 'Securing the themes folder.', 'secure');
@@ -155,14 +157,14 @@ class SecureCommand extends WP_CLI_Command {
     }
 
     /**
-     *  Blocks direct access to sensitive files.
+     *  Blocks direct access to various sensitive files and directories
      *
      *  Blocks direct access to readme.html, readme.txt, wp-config.php and wp-admin/install.php files.
      *
      * ## OPTIONS
      *
      * <block-part>
-     * : Required. accepts: files, directories, htaccess, xmlrpc or all.
+     * : This option is required. Accepts one of the following values: sensitive-files, sensitive-directories, htaccess, xmlrpc or all.
      *
      * [--remove]
      * : Removes the rule from .htaccess or nginx.conf.
@@ -195,15 +197,15 @@ class SecureCommand extends WP_CLI_Command {
 	    $block_part = $args[0];
 
 	    // Failure first.
-	    if ( ! in_array( $block_part, array( 'files', 'directories', 'htaccess', 'xmlrpc', 'all' ), true ) ) {
+	    if ( ! in_array( $block_part, array( 'sensitive-files', 'sensitive-directories', 'htaccess', 'xmlrpc', 'all' ), true ) ) {
 		    WP_CLI::error( sprintf( 'Invalid block part "%s" was provided. Allowed values are "files", "directories", "htaccess", "xmlrpc" or "all"', $block_part ) );
 	    }
 
-	    if ( 'all' === $block_part || 'files' === $block_part ) {
+	    if ( 'all' === $block_part || 'sensitive-files' === $block_part ) {
 			 WP_CLI::debug( 'Blocking access to the sensitive files.', 'secure');
             (new BlockAccessToSensitiveFiles($assoc_args))->output();
 	    }
-	    if ( 'all' === $block_part || 'directories' === $block_part ) {
+	    if ( 'all' === $block_part || 'sensitive-directories' === $block_part ) {
 		    WP_CLI::debug( 'Blocking access to the directories.', 'secure');
 		    ( new BlockAccessToSensitiveDirectories( $assoc_args ) )->output();
 	    }
@@ -215,15 +217,6 @@ class SecureCommand extends WP_CLI_Command {
 			 WP_CLI::debug( 'Blocking access to the xmlrpc.', 'secure');
 		    (new BlockAccessToXmlRpc($assoc_args))->output();
 	    }
-    }
-
-    /**
-     *  Blocks direct access to sensitive directories.
-     *
-     *  Blocks direct access to files in .git, svn and vendor directories
-     */
-    public function block_access_to_sensitive_directories($args, $assoc_args) : void {
-
     }
 
     /**
@@ -251,6 +244,8 @@ class SecureCommand extends WP_CLI_Command {
      *
      *     $ wp secure block_author_scanning
      *     Success: Block Author Scanning rule has been deployed.
+     *
+     * @subcommand block-author-scanning
      *
      * @when before_wp_load
      */
@@ -297,6 +292,7 @@ class SecureCommand extends WP_CLI_Command {
      *
      * @return void
      *
+     * @subcommand integrity-scan
      * @when before_wp_load
      */
     public function integrityscan($args, $assoc_args) : void {
@@ -304,23 +300,20 @@ class SecureCommand extends WP_CLI_Command {
     }
 
     /**
-     * Disable the file editor in Wordpress.
+     * Disable the file editor in WordPress
      *
+     * @subcommand disable-directory-browsing
+     *
+     * @param $args
+     * @param $assoc_args
+     *
+     * @when before_wp_load
      * @return void
      */
-    public function disable_file_editor() : void {
-        WP_CLI::runcommand('config set DISALLOW_FILE_EDIT true');
+    public function disable_file_editor($args, $assoc_args) : void {
+        WP_CLI::runcommand('config set DISALLOW_FILE_EDIT' . !isset($assoc_args['remove']));
     }
 
-    /**
-     * Enable the file editor in Wordpress.
-     *
-     * @return void
-     */
-    public function allow_file_editor() : void {
-        WP_CLI::runcommand('config set DISALLOW_FILE_EDIT false');
-    }
-}
      /**
      *  Fix all directory and file permissions of the wordpress installation
      *
@@ -332,10 +325,12 @@ class SecureCommand extends WP_CLI_Command {
      *     $ wp secure fix_permissions
      *     Success: All permission are reset to wordpress default.
      *
+     * @subcommand fix-permissions
      * @when before_wp_load
      */
     public function fix_permissions($args, $assoc_args) : void {
         (new FixFileAndDirPermissions($assoc_args))->fixPermissions();
+
         WP_CLI::success("Permission successfully updated.");
     }
 }

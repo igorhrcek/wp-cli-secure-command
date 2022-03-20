@@ -4,78 +4,56 @@ Manages common security aspects of WordPress. Supports nginx and Apache.
 ## Basic Usage
 This package implements the following commands:
 
-**wp secure block_access_to_htaccess**
+## wp secure block-access
 
-Blocks access to `.htaccess` and `nginx.conf` files.
+Blocks direct access to sensitive files and directories:
+`readme.txt`, `readme.html`, `xmlrpc.php`, `wp-config.php`, `wp-admin/install.php`, `wp-admin/upgrade.php`, `.git`, `svn`, `cache` and `vendors`
 
-```
-wp secure block_access_to_htaccess [--remove] [--file-path=/alternative/path] [--output] [--server=apache|nginx]
-```
-
-**wp secure block_access_to_sensitive_directories**
-
-Blocks direct access to sensitive directories - `.git`, `svn`, `cache` and `vendors`
-
-```
-wp secure block_access_to_sensitive_directories [--remove] [--file-path=/alternative/path] [--output] [--server=apache|nginx]
-```
-
-**wp secure block_access_to_sensitive_files**
-
-Blocks direct access to sensitive files - `readme.txt`, `readme.html`, `wp-config.php`, `wp-admin/install.php` and `wp-admin/upgrade.php`
+Possible options are:
+- sensitive-files
+- sensitive-directories
+- xmlrpc
+- htaccess
+- all (does all the above)
 
 ```
-wp secure block_access_to_sensitive_files [--remove] [--file-path=/alternative/path] [--output] [--server=apache|nginx]
+wp secure block-access <what-to-block>
+wp secure block-access sensitive-files
+wp secure block-access sensitive-directories
+wp secure block-access xmlrpc
+wp secure block-access htaccess
+wp secure block-access all
 ```
 
-**wp secure block_access_to_xmlrpc**
-
-Blocks direct access XML-RPC
-
-```
-wp secure block_access_to_xmlrpc [--remove] [--file-path=/alternative/path] [--output] [--server=apache|nginx]
-```
-
-### wp secure block_author_scanning
+### wp secure block-author-scanning
 
 Blocks author scanning. Author scanning is a common technique of brute force attacks on WordPress. It is used to crack passwords for the known usernames and to gather additional information about the WordPress itself.
 
 ```
-wp secure block_author_scanning [--remove] [--file-path=/alternative/path] [--output] [--server=apache|nginx]
+wp secure block-author-scanning
 ```
 
-### wp secure block_php_execution_in_plugins
+### wp secure block-php-execution
 
-Blocks direct access and execution of PHP files in `wp-content/plugins` directory.
+Blocks direct access and execution of PHP files in `wp-content/plugins`, `wp-content/uploads`, `wp-content/themes` and `wp-includes` directories.
 
-```
-wp secure block_php_execution_in_plugins [--remove] [--file-path=/alternative/path] [--output] [--server=apache|nginx]
-```
-
-### wp secure block_php_execution_in_uploads
-
-Blocks direct access and execution of PHP files in `wp-content/uploads` directory.
-
-```
-wp secure block_php_execution_in_uploads [--remove] [--file-path=/alternative/path] [--output] [--server=apache|nginx]
-```
-
-### wp secure block_php_execution_in_themes
-
-Blocks direct access and execution of PHP files in `wp-content/themes` directory.
+You need to specify where you want to prevent direct access to PHP files. Possible options are:
+- all
+- plugins
+- uploads
+- themes
+- wp-includes
 
 ```
-wp secure block_php_execution_in_themes [--remove] [--file-path=/alternative/path] [--output] [--server=apache|nginx]
+wp secure block-php-execution <where>
+wp secure block-php-execution all
+wp secure block-php-execution plugins
+wp secure block-php-execution uploads
+wp secure block-php-execution themes
+wp secure block-php-execution wp-includes
 ```
 
-### wp secure block_php_execution_in_wp_includes
-Blocks direct access and execution of PHP files in include directories - `wp-admin/includes`, `wp-includes/*.php`, `wp-includes/js/tinymce/langs/*.php`, `wp-includes/theme-compat`
-
-```
-wp secure block_php_execution_in_wp_includes [--remove] [--file-path=/alternative/path] [--output] [--server=apache|nginx]
-```
-
-### wp secure disable_directory_browsing
+### wp secure disable-directory-browsing
 
 Disables directory browsing.
 
@@ -84,7 +62,7 @@ automatically displays an index page showing the contents of the directory.
 This could make your site vulnerable to hack attacks by revealing important information needed to exploit a vulnerability in a WordPress plugin, theme, or your server in general.
 
 ```
-wp secure disable_directory_browsing [--remove] [--file-path=/alternative/path] [--output] [--server=apache|nginx]
+wp secure disable-directory-browsing
 ```
 
 ### wp secure flush
@@ -105,37 +83,28 @@ We suggest to disable the file editor off.
 wp secure disable-file-editor
 ```
 
-### wp secure enable-file-editor
-
-Enables the Wordpress file editor. See wp secure disable-file-editor.
-
-```
-wp secure enable-file-editor
-```
-
 ## Global options
 
 ### Remove single security rule
 Using `--remove` with any rule command, you can remove it from configuration.
 
 ```
-wp secure block_php_execution_in_wp_includes --remove
+wp secure block-access xmlrpc --remove
 ```
 
 ### Get the output instead of writing in configuration files
 Using `--output` option with any rule command, you can see actual rule code which you can inspect or manually copy to any file of your choice.
 
 ```
-wp secure block_php_execution_in_wp_includes --output
-wp secure block_php_execution_in_wp_includes --output --server=nginx
+wp secure block-access htaccess --output
+wp secure block-access htaccess --output --server=nginx
 ```
 
 ### Specify server type
 By default, all rules are generated for Apache or LiteSpeed web servers that utilize `.htaccess` file. However, you can use `--server` to specify nginx if you want.
 
 ```
-wp secure block_php_execution_in_wp_includes --server=nginx
-wp secure block_php_execution_in_wp_includes --server=--file-path=/home/user/mysite.com/nginx.conf
+wp secure block-access htaccess --server=nginx
 ```
 
 ### Specify custom file path
@@ -143,7 +112,7 @@ By default, all commands assume that rules should be written in the root of Word
 However, you can specify a custom file path that is going to be used for storing security rules.
 
 ```
-wp secure block_php_execution_in_plugins --file-path=/home/user/mysite.com/.htaccess
+wp secure block-access htaccess --file-path=/home/user/mysite.com/.htaccess
 ```
 
 ## Important Note for nginx users
