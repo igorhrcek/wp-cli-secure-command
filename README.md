@@ -20,7 +20,7 @@ Removes all security rules.
 wp secure flush
 ```
 
-## Block access to sensitive files and directories
+### Block access to sensitive files and directories
 ```bash
 wp secure block-access <what-to-block>
 ```
