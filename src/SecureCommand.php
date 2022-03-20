@@ -169,6 +169,9 @@ class SecureCommand extends WP_CLI_Command {
      * [--remove]
      * : Removes the rule from .htaccess or nginx.conf.
      *
+     * [--files]
+     * : Custom comma separated file list to block access to. Default is: "readme.html, readme.txt, wp-config.php, wp-admin/install.php"
+     *
      * [--output]
      * : Use this option to display the actual code that you can manually copy and paste into some other file
      *
@@ -229,6 +232,9 @@ class SecureCommand extends WP_CLI_Command {
      *
      * [--remove]
      * : Removes the rule from .htaccess or nginx.conf.
+     *
+     * [--directories]
+     * : Custom comma separated directory list to block access to. Default is: "git, svn, vendors, cache"
      *
      * [--output]
      * : Use this option to display the actual code that you can manually copy and paste into some other file
