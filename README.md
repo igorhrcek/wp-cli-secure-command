@@ -4,7 +4,10 @@ Manages common security aspects of WordPress. Supports nginx and Apache.
 ## Basic Usage
 This package implements the following commands:
 
-## wp secure block-access
+## Block access to sensitive files and directories
+```bash
+wp secure block-access <what-to-block>
+```
 
 Blocks direct access to sensitive files and directories:
 `readme.txt`, `readme.html`, `xmlrpc.php`, `wp-config.php`, `wp-admin/install.php`, `wp-admin/upgrade.php`, `.git`, `svn`, `cache` and `vendors`
@@ -16,8 +19,9 @@ Possible options are:
 - htaccess
 - all (does all the above)
 
-```
-wp secure block-access <what-to-block>
+Examples:
+
+```bash
 wp secure block-access sensitive-files
 wp secure block-access sensitive-directories
 wp secure block-access xmlrpc
@@ -25,15 +29,25 @@ wp secure block-access htaccess
 wp secure block-access all
 ```
 
-### wp secure block-author-scanning
+### Block Author Scanning
 
-Blocks author scanning. Author scanning is a common technique of brute force attacks on WordPress. It is used to crack passwords for the known usernames and to gather additional information about the WordPress itself.
-
-```
+```bash
 wp secure block-author-scanning
 ```
 
-### wp secure block-php-execution
+Blocks author scanning. Author scanning is a common technique of brute force attacks on WordPress. It is used to crack passwords for the known usernames and to gather additional information about the WordPress itself.
+
+Examples:
+
+```bash
+wp secure block-author-scanning
+```
+
+### Block Direct Access and Execution in certain directories
+
+```bash
+wp secure block-php-execution <where>
+```
 
 Blocks direct access and execution of PHP files in `wp-content/plugins`, `wp-content/uploads`, `wp-content/themes` and `wp-includes` directories.
 
@@ -44,8 +58,9 @@ You need to specify where you want to prevent direct access to PHP files. Possib
 - themes
 - wp-includes
 
-```
-wp secure block-php-execution <where>
+Examples:
+
+```bash
 wp secure block-php-execution all
 wp secure block-php-execution plugins
 wp secure block-php-execution uploads
@@ -53,7 +68,10 @@ wp secure block-php-execution themes
 wp secure block-php-execution wp-includes
 ```
 
-### wp secure disable-directory-browsing
+### Disable Directory Browsing
+```bash
+wp secure disable-directory-browsing
+```
 
 Disables directory browsing.
 
@@ -61,25 +79,26 @@ By default when your web server does not find an index file (i.e. a file like in
 automatically displays an index page showing the contents of the directory.
 This could make your site vulnerable to hack attacks by revealing important information needed to exploit a vulnerability in a WordPress plugin, theme, or your server in general.
 
-```
+Examples:
+
+```bash
 wp secure disable-directory-browsing
 ```
 
-### wp secure flush
+### Remove All Security Rules
 
 Removes all security rules.
 
-```
+```bash
 wp secure flush
 ```
 
-### wp secure disable-file-editor
+### Disable WordPress File Editor
 
-Disables the Wordpress file editor. It could be used to edit arbitrary files using the web interface.
+Disables the WordPress file editor. It could be used to edit arbitrary files using the web interface.
 This makes it easier for attackers to change files on the server using a web browser.
-We suggest to disable the file editor off.
 
-```
+```bash
 wp secure disable-file-editor
 ```
 
@@ -88,14 +107,14 @@ wp secure disable-file-editor
 ### Remove single security rule
 Using `--remove` with any rule command, you can remove it from configuration.
 
-```
+```bash
 wp secure block-access xmlrpc --remove
 ```
 
 ### Get the output instead of writing in configuration files
 Using `--output` option with any rule command, you can see actual rule code which you can inspect or manually copy to any file of your choice.
 
-```
+```bash
 wp secure block-access htaccess --output
 wp secure block-access htaccess --output --server=nginx
 ```
@@ -103,7 +122,7 @@ wp secure block-access htaccess --output --server=nginx
 ### Specify server type
 By default, all rules are generated for Apache or LiteSpeed web servers that utilize `.htaccess` file. However, you can use `--server` to specify nginx if you want.
 
-```
+```bash
 wp secure block-access htaccess --server=nginx
 ```
 
