@@ -13,9 +13,13 @@ class BlockAccessToSensitiveFiles extends SubCommand {
         if ( ! empty( $files ) ) {
             $files = explode( ',', $files );
             $files = array_map( 'trim', $files );
-            return [
-                'file' => $files,
-            ];
+            $files_array = [];
+
+            foreach ( $files as $key => $value ) {
+                $files_array[] = [ 'file' => $value ];
+            }
+            
+            return $files_array;
         }
         return [];
     }

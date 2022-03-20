@@ -24,10 +24,13 @@ class RuleContent {
         $result = '';
         $templateContent = implode( PHP_EOL, $this->content );
 
+
         foreach ( $this->templateVars as $var => $replacements ) {
-            foreach ( $replacements as $replacement ) {
-                $result .= str_replace( sprintf( '{{%s}}', $var ), $replacement, $templateContent );
+            $tmp_result = $templateContent;
+            foreach ( $replacements as $key => $replacement ) {
+                $tmp_result = str_replace( sprintf( '{{%s}}', $key ), $replacement, $tmp_result );
             }
+            $result .= $tmp_result;
         }
 
         $result = explode( PHP_EOL, $result );
