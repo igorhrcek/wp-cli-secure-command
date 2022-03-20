@@ -122,33 +122,39 @@ class SecureCommand extends WP_CLI_Command {
      * @when before_wp_load
      */
     public function block_php($args, $assoc_args) : void {
-		$block_part = $args[0];
+		$blockPart = $args[0];
+
+        $allowedArguments = [
+            'plugins', 'uploads', 'wp-includes', 'themes', 'all'
+        ];
 
 	    // Failure first.
-	    if ( ! in_array( $block_part,
-		    array( 'plugins', 'uploads', 'wp-includes', 'themes', 'all' ),
-		    true )
-	    ) {
-		    WP_CLI::error( sprintf( 'Invalid block part "%s" was provided. Allowed values are "plugins", "uploads", "includes", "themes" or "all"',
-			    $block_part ) );
+	    if(!in_array($blockPart, $allowedArguments, true)) {
+		    WP_CLI::error(
+                sprintf('Invalid block part "%s" was provided. Allowed values are "plugins", "uploads", "includes", "themes" or "all"',
+			    $blockPart)
+            );
 	    }
 
-	    if ( 'all' === $block_part || 'plugins' === $block_part ) {
-		    WP_CLI::debug( 'Securing the plugins folder.', 'secure');
-		    ( new BlockPhpExecutionInPlugins( $assoc_args ) )->output();
-	    }
-	    if ( 'all' === $block_part || 'uploads' === $block_part ) {
-		    WP_CLI::debug( 'Securing the uploads folder.', 'secure');
-		    ( new BlockPhpExecutionInUploads( $assoc_args ) )->output();
-	    }
-	    if ( 'all' === $block_part || 'wp-includes' === $block_part ) {
-		    WP_CLI::debug( 'Securing the includes folder.', 'secure');
-		    ( new BlockPhpExecutionInWpIncludes( $assoc_args ) )->output();
-	    }
-	    if ( 'all' === $block_part || 'themes' === $block_part ) {
-		    WP_CLI::debug( 'Securing the themes folder.', 'secure');
-		    ( new BlockPhpExecutionInThemes( $assoc_args ) )->output();
-	    }
+        if(in_array($blockPart, ['all', 'plugins'])) {
+            WP_CLI::debug('Securing the plugins folder.', 'secure');
+            (new BlockPhpExecutionInPlugins($assoc_args))->output();
+        }
+
+        if(in_array($blockPart, ['all', 'uploads'])) {
+            WP_CLI::debug('Securing the uploads folder.', 'secure');
+            (new BlockPhpExecutionInUploads($assoc_args))->output();
+        }
+
+        if(in_array($blockPart, ['all', 'wp-includes'])) {
+            WP_CLI::debug('Securing the wp-includes folder.', 'secure');
+            (new BlockPhpExecutionInWpIncludes($assoc_args))->output();
+        }
+
+        if(in_array($blockPart, ['all', 'themes'])) {
+            WP_CLI::debug('Securing the themes folder.', 'secure');
+            (new BlockPhpExecutionInThemes($assoc_args))->output();
+        }
     }
 
     /**
