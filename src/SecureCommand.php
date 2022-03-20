@@ -3,8 +3,6 @@
 namespace WP_CLI_Secure;
 
 use WP_CLI;
-use WP_CLI\Process;
-use WP_CLI\Utils;
 use WP_CLI_Command;
 use WP_CLI_Secure\SubCommands\BlockAccessToHtaccess;
 use WP_CLI_Secure\SubCommands\BlockAccessToSensitiveDirectories;
@@ -138,19 +136,19 @@ class SecureCommand extends WP_CLI_Command {
 	    }
 
 	    if ( 'all' === $block_part || 'plugins' === $block_part ) {
-		    var_dump( __LINE__ );
+		    WP_CLI::debug( 'Securing the plugins folder.', 'secure');
 		    ( new BlockPhpExecutionInPlugins( $assoc_args ) )->output();
 	    }
 	    if ( 'all' === $block_part || 'uploads' === $block_part ) {
-		    var_dump( __LINE__ );
+		    WP_CLI::debug( 'Securing the uploads folder.', 'secure');
 		    ( new BlockPhpExecutionInWpIncludes( $assoc_args ) )->output();
 	    }
 	    if ( 'all' === $block_part || 'includes' === $block_part ) {
-		    var_dump( __LINE__ );
+		    WP_CLI::debug( 'Securing the includes folder.', 'secure');
 		    ( new BlockPhpExecutionInUploads( $assoc_args ) )->output();
 	    }
 	    if ( 'all' === $block_part || 'themes' === $block_part ) {
-		    var_dump( __LINE__ );
+		    WP_CLI::debug( 'Securing the themes folder.', 'secure');
 		    ( new BlockPhpExecutionInThemes( $assoc_args ) )->output();
 	    }
     }
