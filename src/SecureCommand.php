@@ -301,4 +301,22 @@ class SecureCommand extends WP_CLI_Command {
     public function integrityscan($args, $assoc_args) : void {
         WP_CLI::runcommand('core verify-checksums');
     }
+
+    /**
+     * Disable the file editor in Wordpress.
+     *
+     * @return void
+     */
+    public function disable_file_editor() : void {
+        WP_CLI::runcommand('config set DISALLOW_FILE_EDIT true');
+    }
+
+    /**
+     * Enable the file editor in Wordpress.
+     *
+     * @return void
+     */
+    public function allow_file_editor() : void {
+        WP_CLI::runcommand('config set DISALLOW_FILE_EDIT false');
+    }
 }
