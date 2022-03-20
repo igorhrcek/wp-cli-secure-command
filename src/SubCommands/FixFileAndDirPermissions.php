@@ -18,7 +18,7 @@ class FixFileAndDirPermissions {
      *
      * @return bool
      */
-    public function fixPermissions() : bool {
+    public function output() : bool {
         //Stop execution if ABSPATH is not defined to prevent changing permissions in the wrong place
         if(!defined('ABSPATH')) {
             return false;
