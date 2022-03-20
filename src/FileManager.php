@@ -82,7 +82,7 @@ class FileManager {
         }
 
         if(!$this->isReadable()) {
-            throw new (FileIsNotReadable::class);
+            throw new FileIsNotReadable();
         }
 
         return $this->read();
@@ -156,7 +156,7 @@ class FileManager {
      *
      * @return array|string
      */
-    private static function removeZeroSpace($content): array|string
+    private static function removeZeroSpace($content)
     {
         if(is_array($content)) {
             return array_map([static::class, 'removeZeroSpace'], $content);
@@ -203,9 +203,9 @@ class FileManager {
      *
      * @param string $needle
      *
-     * @return int|bool
+     * @return bool|int|string
      */
-    private function findInFile(string $needle) : int|bool {
+    private function findInFile(string $needle) {
         return array_search($needle, $this->file);
     }
 
@@ -214,7 +214,7 @@ class FileManager {
      *
      * @return array|bool
      */
-    public function extractSecureBlock(): bool|array {
+    public function extractSecureBlock() {
         $start = $this->findInFile(self::MARKER_GLOBAL_START . self::SPACE_DELIMITER . self::MARKER_WP_CLI_SECURE);
         $end = $this->findInFile(self::MARKER_GLOBAL_END . self::SPACE_DELIMITER . self::MARKER_WP_CLI_SECURE);
 
@@ -330,7 +330,7 @@ class FileManager {
     public function add(array $content, string $marker = ''): bool {
         //If the rule block already exist, there is no reason to add it again
         if($this->hasRuleBlock($marker)) {
-            throw new(RuleAlreadyExist::class);
+            throw new RuleAlreadyExist();
         }
 
         //Check if file exist?
@@ -339,7 +339,7 @@ class FileManager {
         }
 
         if(!$this->isWritable()) {
-            throw new(FileIsNotWritable::class);
+            throw new FileIsNotWritable();
         }
 
         //Wrap the rule block with markers

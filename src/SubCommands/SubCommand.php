@@ -33,7 +33,7 @@ class SubCommand {
     /**
      * @var mixed The content of the rule template file
      */
-    public mixed $ruleContent;
+    public $ruleContent;
 
     /**
      * @var string Rule template name
@@ -98,11 +98,11 @@ class SubCommand {
     }
 
     /**
-     * Reads rule template file. Depending on output type, returns string or an array
+     * Reads rule template file. Depending on output type, returns an array
      *
-     * @return string|array
+     * @return array
      */
-    private function setRuleContent() : string|array {
+    private function setRuleContent() : array {
         //Return an empty array in case when the executed command does not require a template
         if($this->ruleTemplate === '') {
             return [];
