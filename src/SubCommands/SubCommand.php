@@ -8,6 +8,7 @@ use WP_CLI_Secure\Exceptions\FileIsNotReadable;
 use WP_CLI_Secure\Exceptions\FileIsNotWritable;
 use WP_CLI_Secure\Exceptions\RuleAlreadyExist;
 use WP_CLI_Secure\FileManager;
+use WP_CLI_Secure\RuleContent;
 
 class SubCommand {
     /**
@@ -53,7 +54,7 @@ class SubCommand {
     /**
      * @var array Command line arguments passed as $assoc_args
      */
-    private array $commandArguments;
+    public array $commandArguments;
 
     /**
      * Default file name for Apache server type
@@ -119,7 +120,19 @@ class SubCommand {
         }
         unset($file);
 
+        $result = new RuleContent( $result, $this->getTemplateVars() );
+        $result = $result->getContent();
+
         return $result;
+    }
+
+    /**
+     * Returns an array with the template replacements.
+     *
+     * @return array
+     */
+    public function getTemplateVars() {
+        return [];
     }
 
     /**
