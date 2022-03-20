@@ -147,34 +147,31 @@ class SubCommand {
      * @throws WP_CLI\ExitException
      */
     public function output() {
-        if($this->output) {
-            try {
-                $fileManager = new FileManager($this->filePath);
-                $content = $fileManager->wrap($this->ruleContent, 'block', $this->ruleName);
-                WP_CLI::line(implode(PHP_EOL, $content));
-            } catch(FileDoesNotExist|RuleAlreadyExist|FileIsNotWritable|FileIsNotReadable $e) {
-                WP_CLI::error($e->getMessage());
-            }
-        } else {
-            try {
-                $fileManager = new FileManager($this->filePath);
+	    try {
+		    $fileManager = new FileManager( $this->filePath );
+		    if ( $this->output ) {
+			    $content     = $fileManager->wrap( $this->ruleContent, 'block', $this->ruleName );
+			    WP_CLI::line( implode( PHP_EOL, $content ) );
+		    } else {
+			    if ( isset( $this->commandArguments['remove'] ) && $this->commandArguments['remove'] === true ) {
+				    //We need to remove the rule from file
+				    $result = $fileManager->remove( $this->ruleName );
 
-                if(isset($this->commandArguments['remove']) && $this->commandArguments['remove'] === true) {
-                    //We need to remove the rule from file
-                    $result = $fileManager->remove($this->ruleName);
+				    if ( $result ) {
+					    WP_CLI::success( $this->getOutputMessage( 'removal' ) );
+				    }
+			    } else {
+				    //Add the rule
+				    $fileManager->add( $this->ruleContent, $this->ruleName );
 
-                    if($result) {
-                        WP_CLI::success($this->getOutputMessage('removal'));
-                    }
-                } else {
-                    //Add the rule
-                    $fileManager->add($this->ruleContent, $this->ruleName);
+				    WP_CLI::success( $this->getOutputMessage( 'success' ) );
+			    }
 
-                    WP_CLI::success($this->getOutputMessage('success'));
-                }
-            } catch(FileDoesNotExist|RuleAlreadyExist|FileIsNotWritable|FileIsNotReadable $e) {
-                WP_CLI::error($e->getMessage());
-            }
-        }
+		    }
+	    } catch ( FileDoesNotExist | FileIsNotWritable | FileIsNotReadable $e ) {
+		    WP_CLI::error( $e->getMessage() );
+	    } catch ( RuleAlreadyExist $e ) {
+		    WP_CLI::warning( $e->getMessage() );
+	    }
     }
 }
