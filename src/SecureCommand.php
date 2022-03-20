@@ -160,6 +160,9 @@ class SecureCommand extends WP_CLI_Command {
      *
      * ## OPTIONS
      *
+     * <block-part>
+     * : Required. accepts: files, directories, htaccess, xmlrpc or all.
+     *
      * [--remove]
      * : Removes the rule from .htaccess or nginx.conf.
      *
@@ -175,75 +178,51 @@ class SecureCommand extends WP_CLI_Command {
      *
      * ## EXAMPLES
      *
-     *     $ wp secure block_access_to_sensitive_files
+     *     # Secure the sensitive files.
+     *     $ wp secure block-access files
      *     Success: Block Access to Sensitive Files rule has been deployed.
+     *
+     *     # Secure all files & directories.
+     *     $ wp secure block-access all
+     *     Success: Block Access to Sensitive Files rule has been deployed.
+     *
+     * @subcommand block-access
      *
      * @when before_wp_load
      */
-    public function block_access_to_sensitive_files($args, $assoc_args): void {
-        (new BlockAccessToSensitiveFiles($assoc_args))->output();
+    public function block_access($args, $assoc_args): void {
+	    $block_part = $args[0];
+
+	    // Failure first.
+	    if ( ! in_array( $block_part, array( 'files', 'directories', 'htaccess', 'xmlrpc', 'all' ), true ) ) {
+		    WP_CLI::error( sprintf( 'Invalid block part "%s" was provided. Allowed values are "files", "directories", "htaccess", "xmlrpc" or "all"', $block_part ) );
+	    }
+
+	    if ( 'all' === $block_part || 'files' === $block_part ) {
+			 WP_CLI::debug( 'Blocking access to the sensitive files.', 'secure');
+            (new BlockAccessToSensitiveFiles($assoc_args))->output();
+	    }
+	    if ( 'all' === $block_part || 'directories' === $block_part ) {
+		    WP_CLI::debug( 'Blocking access to the directories.', 'secure');
+		    ( new BlockAccessToSensitiveDirectories( $assoc_args ) )->output();
+	    }
+	    if ( 'all' === $block_part || 'htaccess' === $block_part ) {
+			 WP_CLI::debug( 'Blocking access to the htaccess.', 'secure');
+		    (new BlockAccessToHtaccess($assoc_args))->output();
+	    }
+	    if ( 'all' === $block_part || 'xmlrpc' === $block_part ) {
+			 WP_CLI::debug( 'Blocking access to the xmlrpc.', 'secure');
+		    (new BlockAccessToXmlRpc($assoc_args))->output();
+	    }
     }
 
     /**
      *  Blocks direct access to sensitive directories.
      *
      *  Blocks direct access to files in .git, svn and vendor directories
-     *
-     * ## OPTIONS
-     *
-     * [--remove]
-     * : Removes the rule from .htaccess or nginx.conf.
-     *
-     * [--output]
-     * : Use this option to display the actual code that you can manually copy and paste into some other file
-     *
-     * [--file-path=<path>]
-     * : Set a custom path to the file which command should use to write rules into
-     *
-     * [--server=<server>]
-     * : Set a server type. Possible options are "apache" and "nginx". Default is "apache" and all rules are stored in
-     * .htaccess file
-     *
-     * ## EXAMPLES
-     *
-     *     $ wp secure block_access_to_sensitive_directories
-     *     Success: Block Access to Sensitive Directories rule has been deployed.
-     *
-     * @when before_wp_load
      */
     public function block_access_to_sensitive_directories($args, $assoc_args) : void {
-        (new BlockAccessToSensitiveDirectories($assoc_args))->output();
-    }
 
-    /**
-     *  Blocks direct access to .htaccess
-     *
-     *  Blocks direct access to .htaccess file
-     *
-     * ## OPTIONS
-     *
-     * [--remove]
-     * : Removes the rule from .htaccess or nginx.conf.
-     *
-     * [--output]
-     * : Use this option to display the actual code that you can manually copy and paste into some other file
-     *
-     * [--file-path=<path>]
-     * : Set a custom path to the file which command should use to write rules into
-     *
-     * [--server=<server>]
-     * : Set a server type. Possible options are "apache" and "nginx". Default is "apache" and all rules are stored in
-     * .htaccess file
-     *
-     * ## EXAMPLES
-     *
-     *     $ wp secure block_access_to_htaccess
-     *     Success: Block Access to .htaccess rule has been deployed
-     *
-     * @when before_wp_load
-     */
-    public function block_access_to_htaccess($args, $assoc_args): void {
-        (new BlockAccessToHtaccess($assoc_args))->output();
     }
 
     /**
@@ -276,38 +255,6 @@ class SecureCommand extends WP_CLI_Command {
      */
     public function block_author_scanning($args, $assoc_args) : void {
         (new BlockAuthorScanning($assoc_args))->output();
-    }
-
-    /**
-     *  Blocks access to XML-RPC
-     *
-     *  XML-RPC is a remote procedure call which uses XML to encode its calls and HTTP as a transport mechanism. If you want to access and publish to your blog remotely, then you need XML-RPC enabled.
-     *  For majority of WordPress installations, XML-RPC is not required and poses a significant security risk.
-     *
-     * ## OPTIONS
-     *
-     * [--remove]
-     * : Removes the rule from .htaccess or nginx.conf.
-     *
-     * [--output]
-     * : Use this option to display the actual code that you can manually copy and paste into some other file
-     *
-     * [--file-path=<path>]
-     * : Set a custom path to the file which command should use to write rules into
-     *
-     * [--server=<server>]
-     * : Set a server type. Possible options are "apache" and "nginx". Default is "apache" and all rules are stored in
-     * .htaccess file
-     *
-     * ## EXAMPLES
-     *
-     *     $ wp secure block_author_scanning
-     *     Success: Block Author Scanning rule has been deployed.
-     *
-     * @when before_wp_load
-     */
-    public function block_access_to_xmlrpc($args, $assoc_args) : void {
-        (new BlockAccessToXmlRpc($assoc_args))->output();
     }
 
     /**
