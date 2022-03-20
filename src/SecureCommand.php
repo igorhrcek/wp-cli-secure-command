@@ -287,6 +287,10 @@ class SecureCommand extends WP_CLI_Command {
      *
      * It also returns a list of files that shouldn't be part of default WordPress installation.
      *
+     * ## EXAMPLES
+     *
+     * $ wp secure integrity-scan
+     *
      * @param $args
      * @param $assoc_args
      *
@@ -302,16 +306,17 @@ class SecureCommand extends WP_CLI_Command {
     /**
      * Disable the file editor in WordPress
      *
-     * @subcommand disable-directory-browsing
+     * @subcommand disable-file-editor
      *
      * @param $args
      * @param $assoc_args
      *
      * @when before_wp_load
+     *
      * @return void
      */
     public function disable_file_editor($args, $assoc_args) : void {
-        WP_CLI::runcommand('config set DISALLOW_FILE_EDIT' . !isset($assoc_args['remove']));
+        WP_CLI::runcommand('config set DISALLOW_FILE_EDIT ' . !isset($assoc_args['remove']));
     }
 
      /**
@@ -322,8 +327,8 @@ class SecureCommand extends WP_CLI_Command {
      *
      * ## EXAMPLES
      *
-     *     $ wp secure fix_permissions
-     *     Success: All permission are reset to wordpress default.
+     * $ wp secure fix-permissions
+     * Success: All permission are reset to wordpress default.
      *
      * @subcommand fix-permissions
      * @when before_wp_load
@@ -332,5 +337,32 @@ class SecureCommand extends WP_CLI_Command {
         (new FixFileAndDirPermissions($assoc_args))->fixPermissions();
 
         WP_CLI::success("Permission successfully updated.");
+    }
+
+    /**
+     * Deploys all security rules at once
+     *
+     * ## EXAMPLES
+     *
+     * $ wp secure all
+     *
+     * @param $args
+     * @param $assoc_args
+     *
+     * @return void
+     */
+    public function all($args, $assoc_args) : void {
+        (new DisableDirectoryBrowsing($assoc_args))->output();
+        (new BlockPhpExecutionInPlugins($assoc_args))->output();
+        (new BlockPhpExecutionInUploads($assoc_args))->output();
+        (new BlockPhpExecutionInThemes($assoc_args))->output();
+        (new BlockPhpExecutionInWpIncludes($assoc_args))->output();
+        (new BlockAccessToXmlRpc($assoc_args))->output();
+        (new BlockAccessToHtaccess($assoc_args))->output();
+        (new BlockAccessToSensitiveFiles($assoc_args))->output();
+        (new BlockAccessToSensitiveDirectories($assoc_args))->output();
+        (new BlockAuthorScanning($assoc_args))->output();
+        (new FixFileAndDirPermissions())->output();
+        $this->disable_file_editor($args, $assoc_args);
     }
 }
