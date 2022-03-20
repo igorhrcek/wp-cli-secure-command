@@ -259,6 +259,9 @@ class SecureCommand extends WP_CLI_Command {
      * [--remove]
      * : Removes the rule from .htaccess or nginx.conf.
      *
+     * [--directories]
+     * : Custom comma separated directory list to block access to. Default is: "git, svn, vendors, cache"
+     *
      * [--output]
      * : Use this option to display the actual code that you can manually copy and paste into some other file
      *
