@@ -4,6 +4,7 @@ namespace WP_CLI_Secure;
 
 use WP_CLI;
 use WP_CLI_Command;
+use WP_CLI_Secure\SubCommands\BlockAccessToCustomSensitiveFiles;
 use WP_CLI_Secure\SubCommands\BlockAccessToHtaccess;
 use WP_CLI_Secure\SubCommands\BlockAccessToSensitiveDirectories;
 use WP_CLI_Secure\SubCommands\BlockAccessToSensitiveFiles;
@@ -215,12 +216,12 @@ class SecureCommand extends WP_CLI_Command {
 		    WP_CLI::error(sprintf('Invalid block part "%s" was provided. Allowed values are ' . implode(', ', $allowedSubArguments), $blockPart));
 	    }
 
-        if(in_array($blockPart, ['all', 'custom', 'sensitive-files'])) {
+        if(in_array($blockPart, ['all', 'sensitive-files'])) {
             WP_CLI::debug('Blocking access to the sensitive files.', 'secure');
             (new BlockAccessToSensitiveFiles($assoc_args))->output();
         }
 
-        if(in_array($blockPart, ['all', 'custom', 'sensitive-directories'])) {
+        if(in_array($blockPart, ['all', 'sensitive-directories'])) {
             WP_CLI::debug('Blocking access to the directories.', 'secure');
             (new BlockAccessToSensitiveDirectories($assoc_args))->output();
         }
@@ -233,6 +234,15 @@ class SecureCommand extends WP_CLI_Command {
         if(in_array($blockPart, ['all', 'xmlrpc'])) {
             WP_CLI::debug('Blocking access to the xmlrpc.', 'secure');
             (new BlockAccessToXmlRpc($assoc_args))->output();
+        }
+
+        //Custom files and directories blocking
+        if($blockPart === 'custom' && isset($assoc_args['files'])) {
+            (new BlockAccessToCustomSensitiveFiles($assoc_args))->output();
+        }
+
+        if($blockPart === 'custom' && isset($assoc_args['directories'])) {
+            (new BlockAccessToSensitiveDirectories($assoc_args))->output();
         }
     }
 
