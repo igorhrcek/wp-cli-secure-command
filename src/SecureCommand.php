@@ -160,12 +160,15 @@ class SecureCommand extends WP_CLI_Command {
     /**
      *  Blocks direct access to various sensitive files and directories
      *
-     *  Blocks direct access to readme.html, readme.txt, wp-config.php and wp-admin/install.php files.
+     *  Blocks direct access to sensitive files such as readme.html, readme.txt, wp-config.php and wp-admin/install.php files.
+     *  It also blocks the direct access to a certain number of directories such as .git, svn, cache and vendors.
+     *
+     *  You can use this command to block access to custom files and folders as well.
      *
      * ## OPTIONS
      *
      * <what-to-block>
-     * : This option is required. Accepts one of the following values: sensitive-files, sensitive-directories, htaccess, xmlrpc or all.
+     * : This option is required. Accepts one of the following values: sensitive-files, sensitive-directories, htaccess, xmlrpc, custom or all.
      *
      * [--remove]
      * : Removes the rule from .htaccess or nginx.conf.
@@ -259,11 +262,10 @@ class SecureCommand extends WP_CLI_Command {
      *
      * ## EXAMPLES
      *
-     *     $ wp secure block_author_scanning
+     *     $ wp secure block-author-scanning
      *     Success: Block Author Scanning rule has been deployed.
      *
      * @subcommand block-author-scanning
-     *
      * @when before_wp_load
      */
     public function block_author_scanning($args, $assoc_args) : void {
@@ -273,8 +275,8 @@ class SecureCommand extends WP_CLI_Command {
     /**
      *  Removes all WP CLI Secure rules
      *
-     *  Use this command to remove all deployed security rules. If you are using nginx you need to restart it. If you copied rules manually, this command
-     *  will not remove them!
+     *  Use this command to remove all deployed security rules. If you are using nginx you need to restart it.
+     *  If you copied rules manually, this command will not remove them!
      *
      * ## OPTIONS
      *
@@ -316,18 +318,22 @@ class SecureCommand extends WP_CLI_Command {
      * @subcommand integrity-scan
      * @when before_wp_load
      */
-    public function integrityscan($args, $assoc_args) : void {
+    public function integrity_scan($args, $assoc_args) : void {
         WP_CLI::runcommand('core verify-checksums');
     }
 
     /**
      * Disable the file editor in WordPress
      *
-     * @subcommand disable-file-editor
+     * The problem with the WordPress file editor is that it allows users to run PHP code on your site.
+     * Anytime a user is able to run their own code, this presents a security risk.
+     * If an insecure admin account is hacked, the WordPress file editor is the gateway through which a full-fledged attack can be
+     * carried out.
      *
      * @param $args
      * @param $assoc_args
      *
+     * @subcommand disable-file-editor
      * @when before_wp_load
      *
      * @return void
@@ -337,15 +343,17 @@ class SecureCommand extends WP_CLI_Command {
     }
 
      /**
-     *  Fix all directory and file permissions of the wordpress installation
+     *  Fix all directory and file permissions of the WordPress installation
      *
-     *  Use this command to verify that the permissions of all files and directories are set according the wordpress recommendations.
-     *  IMPORTANT: Don't use this command if you don't know what you are doing here!
+     * Use this command to verify that the permissions of all files and directories are set according the WordPress recommendations.
+     * This command will set 0666 to all files and 0755 to all folders inside WordPress installation.
+     *
+     * IMPORTANT: Don't use this command if you don't know what you are doing here!
      *
      * ## EXAMPLES
      *
      * $ wp secure fix-permissions
-     * Success: All permission are reset to wordpress default.
+     * Success: All permission are set to the WordPress recommended values.
      *
      * @subcommand fix-permissions
      * @when before_wp_load
@@ -358,6 +366,8 @@ class SecureCommand extends WP_CLI_Command {
 
     /**
      * Deploys all security rules at once
+     *
+     * This command will deploy all security rules at once.
      *
      * ## EXAMPLES
      *
