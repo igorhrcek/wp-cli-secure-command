@@ -4,6 +4,22 @@ Manages common security aspects of WordPress. Supports nginx and Apache.
 ## Basic Usage
 This package implements the following commands:
 
+### Deploy All Security rules
+
+Deploys all above-mentioned rules at once.
+
+```bash
+wp secure all
+```
+
+### Remove All Security Rules
+
+Removes all security rules.
+
+```bash
+wp secure flush
+```
+
 ## Block access to sensitive files and directories
 ```bash
 wp secure block-access <what-to-block>
@@ -83,14 +99,6 @@ Examples:
 
 ```bash
 wp secure disable-directory-browsing
-```
-
-### Remove All Security Rules
-
-Removes all security rules.
-
-```bash
-wp secure flush
 ```
 
 ### Disable WordPress File Editor
