@@ -143,3 +143,21 @@ To install the latest version of this package over what's included in WP-CLI, ru
 wp package install git@github.com:igorhrcek/wp-cli-secure-command.git
 ```
 
+## Development and testing
+You need to set up two working WordPress installations on Apache and nginx. Usage of Docker containers is highly recommended - you can use the official WordPress Docker containers, BitNami or bootstrap your environment using [ddev](https://ddev.readthedocs.io/en/stable/users/cli-usage/#wordpress-quickstart). 
+
+For testing you need to create `.env` file with the following content:
+```
+WORDPRESS_NGINX_PATH=wp/nginx
+WORDPRESS_NGINX_URL=https://wpnginx.ddev.site
+WORDPRESS_APACHE_PATH=wp/apache
+WORDPRESS_APACHE_URL=https://wpapache.ddev.site
+```
+
+These paths and URLs are going to be used during tests, so make sure that they are accessible.
+
+## Contributing
+We appreciate you taking the initiative to contribute to this project.
+
+Contributing isn’t limited to just code. We encourage you to contribute in the way that best fits your abilities, by writing tutorials, giving a demo at your local meetup, helping other users with their support questions, or revising our documentation.
+
