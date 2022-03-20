@@ -20,12 +20,12 @@ Removes all security rules.
 wp secure flush
 ```
 
-### Block access to sensitive files and directories
+### Block the access to sensitive files and directories
 ```bash
 wp secure block-access <what-to-block>
 ```
 
-Blocks direct access to sensitive files and directories:
+By default, this command blocks the direct access to sensitive files and directories:
 `readme.txt`, `readme.html`, `xmlrpc.php`, `wp-config.php`, `wp-admin/install.php`, `wp-admin/upgrade.php`, `.git`, `svn`, `cache` and `vendors`
 
 Possible options are:
@@ -33,6 +33,7 @@ Possible options are:
 - sensitive-directories
 - xmlrpc
 - htaccess
+- custom
 - all (does all the above)
 
 Examples:
@@ -44,6 +45,18 @@ wp secure block-access xmlrpc
 wp secure block-access htaccess
 wp secure block-access all
 ```
+
+However, you can also block custom files and/or folders of your choice. To do that you should use `custom` argument
+and pass one of two additional options `--files` and/or `--directories`.
+
+If you want to block custom files, make sure that you pass only file names, not a full file paths. 
+
+Examples:
+
+````bash
+wp secure block-access custom --files=dump.sql,phpinfo.php,adminer.php
+wp secure block-access custom --directories=wp-content/mu-plugins
+````
 
 ### Block Author Scanning
 
@@ -91,7 +104,7 @@ wp secure disable-directory-browsing
 
 Disables directory browsing.
 
-By default when your web server does not find an index file (i.e. a file like index.php or index.html), it
+By default, when your web server does not find an index file (i.e. a file like index.php or index.html), it
 automatically displays an index page showing the contents of the directory.
 This could make your site vulnerable to hack attacks by revealing important information needed to exploit a vulnerability in a WordPress plugin, theme, or your server in general.
 
@@ -108,6 +121,31 @@ This makes it easier for attackers to change files on the server using a web bro
 
 ```bash
 wp secure disable-file-editor
+```
+
+### Fix file and directory permissions
+
+```bash
+wp secure fix-permissions
+```
+
+Use this command to verify that the permissions of all files and directories are set according the WordPress recommendations.
+This command will set **0666** to all files and **0755** to all folders inside WordPress installation.
+
+**IMPORTANT: Don't use this command if you don't know what you are doing here!**
+
+### Check the integrity of WordPress files
+
+Downloads MD5 checksums for the current version from WordPress.org, and compares those checksums against the currently
+installed files.
+
+It also returns a list of files that shouldn't be part of default WordPress installation, which can be very useful when you are
+looking for a possible injected files.
+
+Examples:
+
+```bash
+wp secure integrity-scan
 ```
 
 ## Global options
@@ -143,7 +181,7 @@ wp secure block-access htaccess --file-path=/home/user/mysite.com/.htaccess
 ```
 
 ## Important Note for nginx users
-nginx rules are stored in the `nginx.conf` file. However, for rules to actually work, you need to manually include this file in your vhost configuration and then restart nginx server:
+The nginx rules are stored in the `nginx.conf` file. However, for rules to actually work, you need to manually include this file in your vhost configuration and then restart nginx server:
 ```
 systemctl restart nginx
 ```

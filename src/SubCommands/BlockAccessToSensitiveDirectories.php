@@ -8,17 +8,26 @@ class BlockAccessToSensitiveDirectories extends SubCommand {
     public string $successMessage = 'Block Access to Sensitive Directories rule has been deployed.';
     public string $removalMessage= 'Block Access to Sensitive Directories rule has been removed.';
 
-    public function getTemplateVars() {
-        $directories = isset( $this->commandArguments['directories'] ) ? $this->commandArguments['directories'] : 'git,svn,vendors,cache';
-        if ( ! empty( $directories ) ) {
-            $directories = explode( ',', $directories );
-            $directories = array_map( 'trim', $directories );
+    /**
+     * @var string Default directories that we are going to protect
+     */
+    private string $sensitiveDirectories = '.git,svn,vendors,cache';
+
+    /**
+     * @return array
+     */
+    public function getTemplateVars() : array {
+        $directories = $this->commandArguments['directories'] ?? $this->sensitiveDirectories;
+        if (!empty($directories)) {
+            $directories = explode(',', $directories);
+            $directories = array_map('trim', $directories);
             $directories_array = [];
 
             return [
-                [ 'directories' => implode( '|', array_map( 'preg_quote', $directories ) ) ]
+                ['directories' => implode('|', array_map('preg_quote', $directories))]
             ];
         }
+
         return [];
     }
 }
