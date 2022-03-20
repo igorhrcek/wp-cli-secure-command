@@ -316,7 +316,7 @@ class SecureCommand extends WP_CLI_Command {
      *
      * @return void
      */
-    public function allow_file_editor() : void {
+    public function enable_file_editor() : void {
         WP_CLI::runcommand('config set DISALLOW_FILE_EDIT false');
     }
 }
