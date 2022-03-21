@@ -306,9 +306,10 @@ class SecureCommand extends WP_CLI_Command {
      *
      * ## EXAMPLES
      *
-     *     $ wp secure add_security_headers
+     *     $ wp secure add-security-headers
      *     Success: Add Security Headers rule has been deployed.
      *
+     * @subcommand add-security-headers
      * @when before_wp_load
      */
     public function add_security_headers($args, $assoc_args) : void {
