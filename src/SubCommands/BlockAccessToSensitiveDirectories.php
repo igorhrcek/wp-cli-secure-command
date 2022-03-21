@@ -9,7 +9,7 @@ class BlockAccessToSensitiveDirectories extends SubCommand {
     public string $removalMessage= 'Block Access to Sensitive Directories rule has been removed.';
 
     public function getTemplateVars() {
-        $directories = isset( $this->commandArguments['directories'] ) ? $this->commandArguments['directories'] : 'git,svn,vendors,cache';
+        $directories = isset( $this->commandArguments['directories'] ) ? $this->commandArguments['directories'] : '.git,svn,vendors,cache';
         if ( ! empty( $directories ) ) {
             $directories = explode( ',', $directories );
             $directories = array_map( 'trim', $directories );

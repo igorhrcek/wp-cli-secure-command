@@ -8,5 +8,5 @@ class RuleAlreadyExist extends Exception {
     /**
      * @var string
      */
-    protected $message = 'The rule already exist in the file';
+    protected $message = 'The rule already exists in the file';
 }
