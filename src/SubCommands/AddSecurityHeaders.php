@@ -9,6 +9,7 @@ class AddSecurityHeaders extends SubCommand {
     public string $removalMessage= 'Add Security Headers rule has been removed.';
 
     public function getTemplateVars() : array {
+
         $default_headers = [
             'Strict-Transport-Security' => '"max-age=63072000; includeSubDomains; preload"',
             'Referrer-Policy' => 'strict-origin-when-cross-origin',
