@@ -13,7 +13,6 @@ class BlockAccessToSensitiveDirectories extends SubCommand {
         if ( ! empty( $directories ) ) {
             $directories = explode( ',', $directories );
             $directories = array_map( 'trim', $directories );
-            $directories_array = [];
 
             return [
                 [ 'directories' => implode( '|', array_map( 'preg_quote', $directories ) ) ]

@@ -6,6 +6,7 @@ use WP_CLI;
 use WP_CLI\Process;
 use WP_CLI\Utils;
 use WP_CLI_Command;
+use WP_CLI_Secure\SubCommands\AddSecurityHeaders;
 use WP_CLI_Secure\SubCommands\BlockAccessToHtaccess;
 use WP_CLI_Secure\SubCommands\BlockAccessToSensitiveDirectories;
 use WP_CLI_Secure\SubCommands\BlockAccessToSensitiveFiles;
@@ -281,6 +282,40 @@ class SecureCommand extends WP_CLI_Command {
      */
     public function block_access_to_sensitive_directories($args, $assoc_args) : void {
         (new BlockAccessToSensitiveDirectories($assoc_args))->output();
+    }
+
+    /**
+     *  Set Security Headers.
+     *
+     *  Set Security Headers.
+     *
+     * ## OPTIONS
+     *
+     * [--remove]
+     * : Removes the rule from .htaccess or nginx.conf.
+     *
+     * [--headers]
+     * : Custom comma separated header list to add.
+     *
+     * [--output]
+     * : Use this option to display the actual code that you can manually copy and paste into some other file
+     *
+     * [--headers=<headers>]
+     * : List of headers you want to be added.
+     *
+     * [--server=<server>]
+     * : Set a server type. Possible options are "apache" and "nginx". Default is "apache" and all rules are stored in
+     * .htaccess file
+     *
+     * ## EXAMPLES
+     *
+     *     $ wp secure add_security_headers
+     *     Success: Add Security Headers rule has been deployed.
+     *
+     * @when before_wp_load
+     */
+    public function add_security_headers($args, $assoc_args) : void {
+        (new AddSecurityHeaders($assoc_args))->output();
     }
 
     /**
