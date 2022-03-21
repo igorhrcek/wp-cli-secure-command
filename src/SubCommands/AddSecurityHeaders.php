@@ -18,7 +18,7 @@ class AddSecurityHeaders extends SubCommand {
             'X-XSS-Protection' => '"1; mode=block"'
         ];
 
-        $headers = isset( $this->commandArguments['headers'] ) ? $this->commandArguments['headers'] : array_keys( $default_headers );
+        $headers = $this->commandArguments['headers'] ?? array_keys($default_headers);
         if ( ! empty( $headers ) ) {
             if ( is_string( $headers ) ) {
                 $headers = explode( ',', $headers );
@@ -45,6 +45,7 @@ class AddSecurityHeaders extends SubCommand {
             }
             return $headers_array;
         }
+
         return [];
     }
 }
