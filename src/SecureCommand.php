@@ -306,9 +306,10 @@ class SecureCommand extends WP_CLI_Command {
      *
      * ## EXAMPLES
      *
-     *     $ wp secure add_security_headers
+     *     $ wp secure add-security-headers
      *     Success: Add Security Headers rule has been deployed.
      *
+     * @subcommand add-security-headers
      * @when before_wp_load
      */
     public function add_security_headers($args, $assoc_args) : void {
@@ -436,6 +437,7 @@ class SecureCommand extends WP_CLI_Command {
         (new BlockAccessToSensitiveDirectories($assoc_args))->output();
         (new BlockAuthorScanning($assoc_args))->output();
         (new FixFileAndDirPermissions())->output();
+        (new AddSecurityHeaders($assoc_args))->output();
         $this->disable_file_editor($args, $assoc_args);
     }
 }

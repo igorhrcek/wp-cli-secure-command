@@ -8,8 +8,13 @@ class BlockAccessToSensitiveFiles extends SubCommand {
     public string $successMessage = 'Block Access to Sensitive Files rule has been deployed.';
     public string $removalMessage= 'Block Access to Sensitive Files rule has been removed.';
 
-    public function getTemplateVars() {
-        $files = isset( $this->commandArguments['files'] ) ? $this->commandArguments['files'] : 'readme.html,readme.txt,wp-config.php,nginx.conf,/wp-admin/install.php,/wp-admin/upgrade.php';
+    /**
+     * @var string List of files that we are protecting by default
+     */
+    private string $protectedFiles = 'readme.html,readme.txt,wp-config.php,nginx.conf,/wp-admin/install.php,/wp-admin/upgrade.php';
+
+    public function getTemplateVars() : array {
+        $files = $this->commandArguments['files'] ?? $this->protectedFiles;
         if ( ! empty( $files ) ) {
             $files = explode( ',', $files );
             $files = array_map( 'trim', $files );

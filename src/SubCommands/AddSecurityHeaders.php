@@ -8,8 +8,7 @@ class AddSecurityHeaders extends SubCommand {
     public string $successMessage = 'Add Security Headers rule has been deployed.';
     public string $removalMessage= 'Add Security Headers rule has been removed.';
 
-    public function getTemplateVars() {
-
+    public function getTemplateVars() : array {
         $default_headers = [
             'Strict-Transport-Security' => '"max-age=63072000; includeSubDomains; preload"',
             'Referrer-Policy' => 'strict-origin-when-cross-origin',
@@ -18,7 +17,7 @@ class AddSecurityHeaders extends SubCommand {
             'X-XSS-Protection' => '"1; mode=block"'
         ];
 
-        $headers = isset( $this->commandArguments['headers'] ) ? $this->commandArguments['headers'] : array_keys( $default_headers );
+        $headers = $this->commandArguments['headers'] ?? array_keys($default_headers);
         if ( ! empty( $headers ) ) {
             if ( is_string( $headers ) ) {
                 $headers = explode( ',', $headers );
@@ -45,6 +44,7 @@ class AddSecurityHeaders extends SubCommand {
             }
             return $headers_array;
         }
+
         return [];
     }
 }
