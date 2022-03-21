@@ -29,7 +29,7 @@ class FixFileAndDirPermissions {
             chmod($file, is_file($file) ? $this->filePermissions : $this->directoryPermissions);
         }
 
-        WP_CLI::success("Permissions were successfully updated.");
+        \WP_CLI::success("Permissions were successfully updated.");
 
         return true;
     }
