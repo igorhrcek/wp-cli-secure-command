@@ -34,7 +34,7 @@ class SubCommand {
     /**
      * @var mixed The content of the rule template file
      */
-    public mixed $ruleContent;
+    public $ruleContent;
 
     /**
      * @var string Rule template name
@@ -99,7 +99,7 @@ class SubCommand {
     }
 
     /**
-     * Reads rule template file. Depending on output type, returns string or an array
+     * Reads rule template file. Depending on output type, returns an array
      *
      * @param boolean $loadVars Whether to load the template vars or not.
      * @param boolean $template Template name to return instead of the loaded one.
@@ -125,6 +125,8 @@ class SubCommand {
         unset($file);
 
         if ( $loadVars ) {
+            //Combine templates and command arguments, if any
+            //This is used for block-access command
             $result = new RuleContent( $result, $this->getTemplateVars() );
             $result = $result->getContent();
         }
@@ -137,7 +139,7 @@ class SubCommand {
      *
      * @return array
      */
-    public function getTemplateVars() {
+    public function getTemplateVars(): array {
         return [];
     }
 
@@ -166,34 +168,31 @@ class SubCommand {
      * @throws WP_CLI\ExitException
      */
     public function output() {
-        if($this->output) {
-            try {
-                $fileManager = new FileManager($this->filePath);
-                $content = $fileManager->wrap($this->ruleContent, 'block', $this->ruleName);
-                WP_CLI::line(implode(PHP_EOL, $content));
-            } catch(FileDoesNotExist|RuleAlreadyExist|FileIsNotWritable|FileIsNotReadable $e) {
-                WP_CLI::error($e->getMessage());
-            }
-        } else {
-            try {
-                $fileManager = new FileManager($this->filePath);
+	    try {
+		    $fileManager = new FileManager($this->filePath);
+		    if ($this->output) {
+			    $content = $fileManager->wrap($this->ruleContent, 'block', $this->ruleName);
+			    WP_CLI::line( implode( PHP_EOL, $content ) );
+		    } else {
+			    if (isset($this->commandArguments['remove']) && $this->commandArguments['remove'] === true) {
+				    //We need to remove the rule from file
+				    $result = $fileManager->remove($this->ruleName);
 
-                if(isset($this->commandArguments['remove']) && $this->commandArguments['remove'] === true) {
-                    //We need to remove the rule from file
-                    $result = $fileManager->remove($this->ruleName);
+				    if ($result) {
+					    WP_CLI::success($this->getOutputMessage('removal'));
+				    }
+			    } else {
+				    //Add the rule
+				    $fileManager->add($this->ruleContent, $this->ruleName);
 
-                    if($result) {
-                        WP_CLI::success($this->getOutputMessage('removal'));
-                    }
-                } else {
-                    //Add the rule
-                    $fileManager->add($this->ruleContent, $this->ruleName);
+				    WP_CLI::success($this->getOutputMessage('success'));
+			    }
 
-                    WP_CLI::success($this->getOutputMessage('success'));
-                }
-            } catch(FileDoesNotExist|RuleAlreadyExist|FileIsNotWritable|FileIsNotReadable $e) {
-                WP_CLI::error($e->getMessage());
-            }
-        }
+		    }
+	    } catch (FileDoesNotExist | FileIsNotWritable | FileIsNotReadable $e) {
+		    WP_CLI::error($e->getMessage());
+	    } catch (RuleAlreadyExist $e) {
+		    WP_CLI::warning($e->getMessage());
+	    }
     }
 }
