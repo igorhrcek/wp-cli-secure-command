@@ -4,7 +4,6 @@ namespace WP_CLI_Secure;
 
 class RuleContent {
 
-
     public array $content;
     public array $templateVars;
 
@@ -29,11 +28,15 @@ class RuleContent {
         $result = '';
         $templateContent = implode( PHP_EOL, $this->content );
 
-
         foreach ( $this->templateVars as $var => $replacements ) {
             $tmp_result = $templateContent;
             foreach ( $replacements as $key => $replacement ) {
-                $tmp_result = str_replace( sprintf( '{{%s}}', $key ), $replacement, $tmp_result );
+                if ( preg_match( '/.+\/.+/', $key ) ) {
+                    $tmp_result = implode( PHP_EOL, $replacement );
+                    $tmp_result = str_replace( '{{file}}', $key, $tmp_result );
+                } else {
+                    $tmp_result = str_replace( sprintf( '{{%s}}', $key ), $replacement, $tmp_result );
+                }
             }
             $result .= $tmp_result;
         }

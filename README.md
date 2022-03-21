@@ -1,4 +1,6 @@
 # wp-cli/secure-command
+Official website: [Hackthewp.com](https://hackthewp.com/)
+
 Manages common security aspects of WordPress. Supports nginx and Apache.
 
 ## Basic Usage

@@ -1,0 +1,3 @@
+location = {{file}} {
+    deny all;
+}
