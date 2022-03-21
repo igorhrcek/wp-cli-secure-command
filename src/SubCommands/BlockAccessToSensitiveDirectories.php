@@ -16,7 +16,7 @@ class BlockAccessToSensitiveDirectories extends SubCommand {
     /**
      * @return array
      */
-    public function getTemplateVars() {
+    public function getTemplateVars() : array {
         $directories = $this->commandArguments['directories'] ?? $this->sensitiveDirectories;
         if ( ! empty( $directories ) ) {
             $directories = explode( ',', $directories );

@@ -20,12 +20,21 @@ class BlockAccessToCustomSensitiveFiles extends SubCommand {
             $files_array = [];
 
             foreach ($files as $key => $value) {
-                $file = (isset($this->commandArguments['server']) && $this->commandArguments['server'] === 'nginx') ?
-                    preg_quote($value) : $value;
-
-                $files_array[] = ['file' => $file];
+                if ( preg_match( '/.+\/.+/', $value ) ) {
+                    $file_with_directory = $this->setRuleContent( false, 'block_access_to_sensitive_files_with_directories' );
+                    if ( isset( $this->commandArguments['server'] ) && $this->commandArguments['server'] === 'nginx' ) {
+                        $file = $value;
+                    } else {
+                        $file = preg_quote( ltrim( $value, '/' ) );
+                    }
+                    $files_array[] = [ $file => $file_with_directory ];
+                } else {
+                    $file = (isset($this->commandArguments['server']) && $this->commandArguments['server'] === 'nginx') ?
+                        preg_quote($value) : $value;
+                    $files_array[] = ['file' => $file];
+                }
             }
-            
+
             return $files_array;
         }
 

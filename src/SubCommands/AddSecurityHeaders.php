@@ -8,7 +8,7 @@ class AddSecurityHeaders extends SubCommand {
     public string $successMessage = 'Add Security Headers rule has been deployed.';
     public string $removalMessage= 'Add Security Headers rule has been removed.';
 
-    public function getTemplateVars() {
+    public function getTemplateVars() : array {
 
         $default_headers = [
             'Strict-Transport-Security' => '"max-age=63072000; includeSubDomains; preload"',
