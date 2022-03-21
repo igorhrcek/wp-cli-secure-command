@@ -22,6 +22,18 @@ Removes all security rules.
 wp secure flush
 ```
 
+### Add Security Headers
+Adds the HSTS, Referrer-Policy, X-Content-Type-Options, X-Frame-Options and X-XSS-Protection
+
+You can choose to add all above or only one or more by using `--headers` argument.
+
+Example:
+```bash
+wp secure add-security-headers
+wp secure add-security-headers --headers=Strict-Transport-Security
+wp secure add-security-headers --headers=Strict-Transport-Security,X-Frame-Options
+```
+
 ### Block the access to sensitive files and directories
 ```bash
 wp secure block-access <what-to-block>
