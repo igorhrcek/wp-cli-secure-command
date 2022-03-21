@@ -4,7 +4,6 @@ namespace WP_CLI_Secure;
 
 class RuleContent {
 
-
     public array $content;
     public array $templateVars;
 
