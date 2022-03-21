@@ -30,5 +30,7 @@ class FixFileAndDirPermissions {
         }
 
         WP_CLI::success("Permissions were successfully updated.");
+
+        return true;
     }
 }
