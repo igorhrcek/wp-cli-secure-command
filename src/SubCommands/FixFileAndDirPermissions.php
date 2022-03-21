@@ -24,12 +24,14 @@ class FixFileAndDirPermissions {
             return false;
         }
 
+        \WP_CLI::confirm( 'This command will change file and folder permissions inside your WordPress installation which might affect the way it works. Are you sure that you want to do this?' );
+
         $iterator = new \RecursiveDirectoryIterator(ABSPATH);
         foreach($iterator as $file) {
             chmod($file, is_file($file) ? $this->filePermissions : $this->directoryPermissions);
         }
 
-        WP_CLI::success("Permissions were successfully updated.");
+        \WP_CLI::success("Permissions were successfully updated.");
 
         return true;
     }
