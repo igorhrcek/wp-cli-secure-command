@@ -349,7 +349,12 @@ class SecureCommand extends WP_CLI_Command {
      * @return void
      */
     public function disable_file_editor($args, $assoc_args) : void {
-        WP_CLI::runcommand('config set DISALLOW_FILE_EDIT ' . !isset($assoc_args['remove']));
+		$value = 'true';
+
+		if (\WP_CLI\Utils\get_flag_value($assoc_args, 'remove', false)) {
+			$value = 'false';
+		}
+        WP_CLI::runcommand("config set DISALLOW_FILE_EDIT {$value} --raw");
     }
 
      /**
