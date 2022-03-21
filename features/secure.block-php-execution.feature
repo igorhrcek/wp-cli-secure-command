@@ -1,9 +1,9 @@
-Feature: Manage WordPress comments
+Feature: Add php blocking rules.
 
   Background:
     Given a WP install
 
-  Scenario: add php blocking rules to the htaccess or nginx config file.
+  Scenario: add php blocking rules to the htaccess and remove it afterwards.
 
     When I run `wp secure block-php-execution plugins`
     Then STDOUT should be:
