@@ -369,9 +369,7 @@ class SecureCommand extends WP_CLI_Command {
      * @when before_wp_load
      */
     public function fix_permissions($args, $assoc_args) : void {
-        (new FixFileAndDirPermissions($assoc_args))->fixPermissions();
-
-        WP_CLI::success("Permission successfully updated.");
+        (new FixFileAndDirPermissions($assoc_args))->output();
     }
 
     /**
