@@ -431,6 +431,7 @@ class SecureCommand extends WP_CLI_Command {
         (new BlockAccessToSensitiveDirectories($assoc_args))->output();
         (new BlockAuthorScanning($assoc_args))->output();
         (new FixFileAndDirPermissions())->output();
+        (new AddSecurityHeaders($assoc_args))->output();
         $this->disable_file_editor($args, $assoc_args);
     }
 }
