@@ -28,7 +28,6 @@ class BlockAccessToSensitiveFiles extends SubCommand {
                     $files_array[] = [ 'file' => isset( $this->commandArguments['server'] ) && $this->commandArguments['server'] === 'nginx' ? preg_quote( $value ) : $value ];
                 }
             }
-            
             return $files_array;
         }
         return [];

@@ -15,7 +15,7 @@ class BlockPhpExecutionInUploadsTest extends BaseTestCase {
         $command = new BlockPhpExecutionInUploads($this->apacheAssocArgs);
         $command->output();
 
-        exec('cd ' . dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . $_ENV['WORDPRESS_NGINX_PATH'] . '&& ddev exec nginx -s reload');
+        exec('cd ' . getcwd() . DIRECTORY_SEPARATOR . $_ENV['WORDPRESS_NGINX_PATH'] . '&& ddev exec nginx -s reload');
     }
 
     public function testItWillReturnHttp403OnNginxWhenAccessingPhpFilesInUploadsDirectory() : void {

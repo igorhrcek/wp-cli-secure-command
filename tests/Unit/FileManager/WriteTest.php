@@ -41,8 +41,8 @@ class WriteTest extends BaseTestCase {
     public function setUp(): void {
         parent::setUp();
 
-        $content = file_get_contents(dirname(__DIR__) . '/assets/htaccess-base.txt');
-        $content2 = file_get_contents(dirname(__DIR__) . '/assets/htaccess-secured.txt');
+        $content = file_get_contents(getcwd() . '/tests/assets/htaccess-base.txt');
+        $content2 = file_get_contents(getcwd() . '/tests/assets/htaccess-secured.txt');
         $this->file = FileHelper::create('.htaccess', 0755, $content);
         $this->file2 = FileHelper::create('.htaccess2', 0777, $content);
         $this->file3 = FileHelper::create('.htaccess-secured', 0666, $content2);
