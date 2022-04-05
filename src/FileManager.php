@@ -9,7 +9,8 @@ use WP_CLI_Secure\Exceptions\FileIsNotReadable;
 use WP_CLI_Secure\Exceptions\FileIsNotWritable;
 use WP_CLI_Secure\Exceptions\RuleAlreadyExist;
 
-class FileManager {
+class FileManager
+{
     /**
      * Defines the end of each marked block
      * # END WP CLI SECURE
@@ -65,7 +66,8 @@ class FileManager {
      */
     private array $file;
 
-    public function __construct(string $path) {
+    public function __construct(string $path)
+    {
         $this->path = $path;
         $this->file = $this->setFileContent();
     }
@@ -76,12 +78,13 @@ class FileManager {
      * @return array
      * @throws FileIsNotReadable
      */
-    private function setFileContent() : array {
-        if(!$this->fileExist()) {
+    private function setFileContent(): array
+    {
+        if (!$this->fileExist()) {
             return [];
         }
 
-        if(!$this->isReadable()) {
+        if (!$this->isReadable()) {
             throw new FileIsNotReadable();
         }
 
@@ -96,18 +99,19 @@ class FileManager {
      *
      * @return array
      */
-    public function read(int $startLine = 0, int $lines = null) : array {
+    public function read(int $startLine = 0, int $lines = null): array
+    {
         $result = [];
         $file = new \SplFileObject($this->path);
         $file->seek($startLine);
 
-        if($lines === null) {
-            while(!$file->eof()) {
+        if ($lines === null) {
+            while (!$file->eof()) {
                 $result[] = rtrim($file->current(), "\n");
                 $file->next();
             }
         } else {
-            for($i = 0; $i < $lines; $i++) {
+            for ($i = 0; $i < $lines; $i++) {
                 if ($file->eof()) {
                     break;
                 }
@@ -127,7 +131,8 @@ class FileManager {
      *
      * @return bool
      */
-    private function isWritable() : bool {
+    private function isWritable(): bool
+    {
         return is_writable($this->path);
     }
 
@@ -136,7 +141,8 @@ class FileManager {
      *
      * @return bool
      */
-    private function isReadable(): bool {
+    private function isReadable(): bool
+    {
         return is_readable($this->path);
     }
 
@@ -145,7 +151,8 @@ class FileManager {
      *
      * @return bool
      */
-    private function fileExist() : bool {
+    private function fileExist(): bool
+    {
         return file_exists($this->path);
     }
 
@@ -156,8 +163,9 @@ class FileManager {
      *
      * @return array|string
      */
-    private static function removeZeroSpace($content) {
-        if(is_array($content)) {
+    private static function removeZeroSpace($content)
+    {
+        if (is_array($content)) {
             return array_map([static::class, 'removeZeroSpace'], $content);
         }
 
@@ -176,20 +184,21 @@ class FileManager {
      *
      * @return array
      */
-    public function extractRuleBlock(string $marker) : array {
+    public function extractRuleBlock(string $marker): array
+    {
         $result = [];
 
         $found = false;
-        foreach($this->file as $line) {
-            if(strpos($line, $marker . self::SPACE_DELIMITER . self::MARKER_RULE_END) !== false) {
+        foreach ($this->file as $line) {
+            if (strpos($line, $marker . self::SPACE_DELIMITER . self::MARKER_RULE_END) !== false) {
                 $found = false;
             }
 
-            if($found) {
+            if ($found) {
                 $result[] = $line;
             }
 
-            if(strpos($line, $marker . self::SPACE_DELIMITER . self::MARKER_RULE_START) !== false) {
+            if (strpos($line, $marker . self::SPACE_DELIMITER . self::MARKER_RULE_START) !== false) {
                 $found = true;
             }
         }
@@ -204,7 +213,8 @@ class FileManager {
      *
      * @return bool|int|string
      */
-    private function findInFile(string $needle) {
+    private function findInFile(string $needle)
+    {
         return array_search($needle, $this->file);
     }
 
@@ -213,21 +223,22 @@ class FileManager {
      *
      * @return array|bool
      */
-    public function extractSecureBlock() {
+    public function extractSecureBlock()
+    {
         $start = $this->findInFile(self::MARKER_GLOBAL_START . self::SPACE_DELIMITER . self::MARKER_WP_CLI_SECURE);
         $end = $this->findInFile(self::MARKER_GLOBAL_END . self::SPACE_DELIMITER . self::MARKER_WP_CLI_SECURE);
 
-        if($start === false || $end === false) {
+        if ($start === false || $end === false) {
             return false;
         }
 
         $result = array_slice($this->file, $start + 1, $end - $start - 1);
 
-        if(!$result) {
+        if (!$result) {
             return false;
         }
 
-        if(count($result) === 1) {
+        if (count($result) === 1) {
             return [trim($result[0])];
         }
 
@@ -241,7 +252,8 @@ class FileManager {
      *
      * @return bool
      */
-    public function hasRuleBlock(string $marker) : bool {
+    public function hasRuleBlock(string $marker): bool
+    {
         return count($this->extractRuleBlock($marker)) > 0;
     }
 
@@ -250,7 +262,8 @@ class FileManager {
      *
      * @return bool
      */
-    public function hasSecureBlock() : bool {
+    public function hasSecureBlock(): bool
+    {
         return is_array($this->extractSecureBlock()) && count($this->extractSecureBlock()) > 0;
     }
 
@@ -261,15 +274,16 @@ class FileManager {
      *
      * @return bool
      */
-    public function createFile(int $permissions = 0644) : bool {
-        if(!$this->fileExist()) {
+    public function createFile(int $permissions = 0644): bool
+    {
+        if (!$this->fileExist()) {
             $path = explode("/", $this->path);
             $fileName = $path[count($path) - 1];
             $basePath = implode('/', array_slice($path, 0, count($path) - 1));
             $pathInfo = pathinfo($this->path);
 
             //Create a full directory path if it does not exist
-            if(!file_exists($pathInfo['dirname'])) {
+            if (!file_exists($pathInfo['dirname'])) {
                 mkdir($pathInfo['dirname'], 0755, true);
             }
 
@@ -292,11 +306,12 @@ class FileManager {
      *
      * @return array
      */
-    public function wrap(array $content, string $with = 'block', string $marker = '') : array {
-        if($with === 'block') {
+    public function wrap(array $content, string $with = 'block', string $marker = ''): array
+    {
+        if ($with === 'block') {
             array_unshift($content, self::MARKER_RULE . self::SPACE_DELIMITER . $marker . self::SPACE_DELIMITER . self::MARKER_RULE_START);
             array_push($content, self::MARKER_RULE . self::SPACE_DELIMITER . $marker . self::SPACE_DELIMITER . self::MARKER_RULE_END);
-        } else if($with === 'global') {
+        } elseif ($with === 'global') {
             array_unshift($content, self::MARKER_GLOBAL_START . self::SPACE_DELIMITER . self::MARKER_WP_CLI_SECURE);
             array_push($content, self::MARKER_GLOBAL_END . self::SPACE_DELIMITER . self::MARKER_WP_CLI_SECURE);
         }
@@ -309,9 +324,9 @@ class FileManager {
      *
      * @return bool
      */
-    private function backup() : bool
+    private function backup(): bool
     {
-        if(file_exists($this->path . self::BACKUP_EXTENSION)) {
+        if (file_exists($this->path . self::BACKUP_EXTENSION)) {
             unlink($this->path . self::BACKUP_EXTENSION);
         }
 
@@ -326,25 +341,26 @@ class FileManager {
      *
      * @return bool
      */
-    public function add(array $content, string $marker = ''): bool {
+    public function add(array $content, string $marker = ''): bool
+    {
         //If the rule block already exist, there is no reason to add it again
-        if($this->hasRuleBlock($marker)) {
+        if ($this->hasRuleBlock($marker)) {
             throw new RuleAlreadyExist();
         }
 
         //Check if file exist?
-        if(!$this->fileExist()) {
+        if (!$this->fileExist()) {
             $this->createFile();
         }
 
-        if(!$this->isWritable()) {
+        if (!$this->isWritable()) {
             throw new FileIsNotWritable();
         }
 
         //Wrap the rule block with markers
         $content = $this->wrap($content, 'block', $marker);
 
-        if(!$this->hasSecureBlock()) {
+        if (!$this->hasSecureBlock()) {
             $content = $this->wrap($content, 'global');
 
             //File does not contain any of our SECURE rules, so we need to prepend our content at the beginning of the file
@@ -364,8 +380,9 @@ class FileManager {
      *
      * @return bool
      */
-    public function clear() : bool {
-        if(!$this->hasSecureBlock()) {
+    public function clear(): bool
+    {
+        if (!$this->hasSecureBlock()) {
             return true;
         }
 
@@ -384,8 +401,9 @@ class FileManager {
      *
      * @return bool
      */
-    public function remove(string $marker) : bool {
-        if(!$this->hasRuleBlock($marker)) {
+    public function remove(string $marker): bool
+    {
+        if (!$this->hasRuleBlock($marker)) {
             return true;
         }
 
@@ -402,7 +420,8 @@ class FileManager {
      *
      * @return bool
      */
-    public function write(): bool {
+    public function write(): bool
+    {
         //Flatten the array (<= PHP 8.0 compatible)
         $this->file = $this->flattenArray($this->file);
 
@@ -418,7 +437,7 @@ class FileManager {
         fseek($fp, 0);
         $write = fwrite($fp, $content);
 
-        if($write) {
+        if ($write) {
             ftruncate($fp, ftell($fp));
         }
         fflush($fp);
@@ -437,7 +456,8 @@ class FileManager {
      *
      * @return array
      */
-    private function flattenArray(array $array, int $depth = 1) : array {
+    private function flattenArray(array $array, int $depth = 1): array
+    {
         $result = [];
         foreach ($array as $key => $value) {
             if (is_array($value) && $depth) {

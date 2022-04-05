@@ -10,7 +10,8 @@ use WP_CLI_Secure\Exceptions\RuleAlreadyExist;
 use WP_CLI_Secure\FileManager;
 use WP_CLI_Secure\RuleContent;
 
-class SubCommand {
+class SubCommand
+{
     /**
      * @var bool Defines if output will be written to a file our to a stdout
      */
@@ -69,7 +70,8 @@ class SubCommand {
     /**
      * @param array  $arguments The $assoc_args passed with the command
      */
-    public function __construct(array $arguments) {
+    public function __construct(array $arguments)
+    {
         $this->commandArguments = $arguments;
         $this->output = $this->setOutput();
         $this->serverType = $this->setServerType();
@@ -80,21 +82,24 @@ class SubCommand {
     /**
      * @return bool
      */
-    private function setOutput() : bool {
+    private function setOutput(): bool
+    {
         return isset($this->commandArguments['output']) && $this->commandArguments['output'] === true;
     }
 
     /**
      * @return string
      */
-    private function setServerType() : string {
+    private function setServerType(): string
+    {
         return $this->commandArguments['server'] ?? 'apache';
     }
 
     /**
      * @return string
      */
-    private function setFilePath() : string {
+    private function setFilePath(): string
+    {
         return $this->commandArguments['file-path'] ?? (($this->serverType === 'apache') ? self::APACHE_FILE : self::NGINX_FILE);
     }
 
@@ -106,9 +111,10 @@ class SubCommand {
      *
      * @return array
      */
-    protected function setRuleContent( bool $loadVars = true, string $template = '' ) : array {
+    protected function setRuleContent(bool $loadVars = true, string $template = ''): array
+    {
         //Return an empty array in case when the executed command does not require a template
-        if($this->ruleTemplate === '' && !$template ) {
+        if ($this->ruleTemplate === '' && !$template) {
             return [];
         }
 
@@ -118,7 +124,7 @@ class SubCommand {
         $result = [];
         $file = new \SplFileObject($templateFilePath);
 
-        while(!$file->eof()) {
+        while (!$file->eof()) {
             $result[] = rtrim($file->current(), "\n");
             $file->next();
         }
@@ -127,7 +133,7 @@ class SubCommand {
         if ($loadVars) {
             //Combine templates and command arguments, if any
             //This is used for block-access command
-            $result = new RuleContent( $result, $this->getTemplateVars() );
+            $result = new RuleContent($result, $this->getTemplateVars());
             $result = $result->getContent();
         }
 
@@ -139,7 +145,8 @@ class SubCommand {
      *
      * @return array
      */
-    public function getTemplateVars(): array {
+    public function getTemplateVars(): array
+    {
         return [];
     }
 
@@ -151,10 +158,11 @@ class SubCommand {
      * @return string
      * @todo I am not too happy about this
      */
-    private function getOutputMessage(string $type = 'success') : string {
-        $message = $this->{$type. 'Message'} ;
+    private function getOutputMessage(string $type = 'success'): string
+    {
+        $message = $this->{$type . 'Message'} ;
 
-        if($this->serverType === 'nginx') {
+        if ($this->serverType === 'nginx') {
             $message .= PHP_EOL . 'Since you are using nginx you need to restart web server manually. If you copied rules manually, this command will have no effect.';
         }
 
@@ -167,32 +175,32 @@ class SubCommand {
      * @return void
      * @throws WP_CLI\ExitException
      */
-    public function output() {
-	    try {
-		    $fileManager = new FileManager($this->filePath);
-		    if ($this->output) {
-			    $content = $fileManager->wrap($this->ruleContent, 'block', $this->ruleName);
-			    WP_CLI::line( implode( PHP_EOL, $content ) );
-		    } else {
-			    if (isset($this->commandArguments['remove']) && $this->commandArguments['remove'] === true) {
-				    //We need to remove the rule from file
-				    $result = $fileManager->remove($this->ruleName);
+    public function output()
+    {
+        try {
+            $fileManager = new FileManager($this->filePath);
+            if ($this->output) {
+                $content = $fileManager->wrap($this->ruleContent, 'block', $this->ruleName);
+                WP_CLI::line(implode(PHP_EOL, $content));
+            } else {
+                if (isset($this->commandArguments['remove']) && $this->commandArguments['remove'] === true) {
+                    //We need to remove the rule from file
+                    $result = $fileManager->remove($this->ruleName);
 
-				    if ($result) {
-					    WP_CLI::success($this->getOutputMessage('removal'));
-				    }
-			    } else {
-				    //Add the rule
-				    $fileManager->add($this->ruleContent, $this->ruleName);
+                    if ($result) {
+                        WP_CLI::success($this->getOutputMessage('removal'));
+                    }
+                } else {
+                    //Add the rule
+                    $fileManager->add($this->ruleContent, $this->ruleName);
 
-				    WP_CLI::success($this->getOutputMessage('success'));
-			    }
-
-		    }
-	    } catch (FileDoesNotExist | FileIsNotWritable | FileIsNotReadable $e) {
-		    WP_CLI::error($e->getMessage());
-	    } catch (RuleAlreadyExist $e) {
-		    WP_CLI::warning($e->getMessage());
-	    }
+                    WP_CLI::success($this->getOutputMessage('success'));
+                }
+            }
+        } catch (FileDoesNotExist | FileIsNotWritable | FileIsNotReadable $e) {
+            WP_CLI::error($e->getMessage());
+        } catch (RuleAlreadyExist $e) {
+            WP_CLI::warning($e->getMessage());
+        }
     }
 }

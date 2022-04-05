@@ -4,7 +4,8 @@ namespace WP_CLI_Secure\Exceptions;
 
 use Exception;
 
-class FileDoesNotExist extends Exception {
+class FileDoesNotExist extends Exception
+{
     /**
      * @var string
      */

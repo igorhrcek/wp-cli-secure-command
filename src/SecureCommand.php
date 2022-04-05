@@ -53,7 +53,8 @@ use WP_CLI_Secure\SubCommands\Flush;
  *
  * @package wp-cli
  */
-class SecureCommand extends WP_CLI_Command {
+class SecureCommand extends WP_CLI_Command
+{
     /**
      * Disables directory browsing.
      *
@@ -89,7 +90,8 @@ class SecureCommand extends WP_CLI_Command {
      *
      * @throws WP_CLI\ExitException
      */
-    public function disable_directory_browsing(array $args, array $assoc_args) : void {
+    public function disableDirectoryBrowsing(array $args, array $assoc_args): void
+    {
         (new DisableDirectoryBrowsing($assoc_args))->output();
     }
 
@@ -133,37 +135,40 @@ class SecureCommand extends WP_CLI_Command {
      *
      * @throws WP_CLI\ExitException
      */
-    public function block_php(array $args, array $assoc_args) : void {
-		$blockPart = $args[0];
+    public function blockPhp(array $args, array $assoc_args): void
+    {
+        $blockPart = $args[0];
 
         $allowedArguments = [
             'plugins', 'uploads', 'wp-includes', 'themes', 'all'
         ];
 
-	    // Failure first.
-	    if(!in_array($blockPart, $allowedArguments, true)) {
-		    WP_CLI::error(
-                sprintf('Invalid block part "%s" was provided. Allowed values are "plugins", "uploads", "includes", "themes" or "all"',
-			    $blockPart)
+        // Failure first.
+        if (!in_array($blockPart, $allowedArguments, true)) {
+            WP_CLI::error(
+                sprintf(
+                    'Invalid block part "%s" was provided. Allowed values are "plugins", "uploads", "includes", "themes" or "all"',
+                    $blockPart
+                )
             );
-	    }
+        }
 
-        if(in_array($blockPart, ['all', 'plugins'])) {
+        if (in_array($blockPart, ['all', 'plugins'])) {
             WP_CLI::debug('Securing the plugins folder.', 'secure');
             (new BlockPhpExecutionInPlugins($assoc_args))->output();
         }
 
-        if(in_array($blockPart, ['all', 'uploads'])) {
+        if (in_array($blockPart, ['all', 'uploads'])) {
             WP_CLI::debug('Securing the uploads folder.', 'secure');
             (new BlockPhpExecutionInUploads($assoc_args))->output();
         }
 
-        if(in_array($blockPart, ['all', 'wp-includes'])) {
+        if (in_array($blockPart, ['all', 'wp-includes'])) {
             WP_CLI::debug('Securing the wp-includes folder.', 'secure');
             (new BlockPhpExecutionInWpIncludes($assoc_args))->output();
         }
 
-        if(in_array($blockPart, ['all', 'themes'])) {
+        if (in_array($blockPart, ['all', 'themes'])) {
             WP_CLI::debug('Securing the themes folder.', 'secure');
             (new BlockPhpExecutionInThemes($assoc_args))->output();
         }
@@ -220,44 +225,45 @@ class SecureCommand extends WP_CLI_Command {
      *
      * @throws WP_CLI\ExitException
      */
-    public function block_access(array $args, array $assoc_args): void {
-	    $blockPart = $args[0];
+    public function blockAccess(array $args, array $assoc_args): void
+    {
+        $blockPart = $args[0];
 
         $allowedSubArguments = [
             'sensitive-files', 'sensitive-directories', 'htaccess', 'xmlrpc', 'all', 'custom'
         ];
 
-	    // Failure first.
-	    if(!in_array( $blockPart, $allowedSubArguments, true)) {
-		    WP_CLI::error(sprintf('Invalid block part "%s" was provided. Allowed values are ' . implode(', ', $allowedSubArguments), $blockPart));
-	    }
+        // Failure first.
+        if (!in_array($blockPart, $allowedSubArguments, true)) {
+            WP_CLI::error(sprintf('Invalid block part "%s" was provided. Allowed values are ' . implode(', ', $allowedSubArguments), $blockPart));
+        }
 
-        if(in_array($blockPart, ['all', 'sensitive-files'])) {
+        if (in_array($blockPart, ['all', 'sensitive-files'])) {
             WP_CLI::debug('Blocking access to the sensitive files.', 'secure');
             (new BlockAccessToSensitiveFiles($assoc_args))->output();
         }
 
-        if(in_array($blockPart, ['all', 'sensitive-directories'])) {
+        if (in_array($blockPart, ['all', 'sensitive-directories'])) {
             WP_CLI::debug('Blocking access to the directories.', 'secure');
             (new BlockAccessToSensitiveDirectories($assoc_args))->output();
         }
 
-        if(in_array($blockPart, ['all', 'htaccess'])) {
+        if (in_array($blockPart, ['all', 'htaccess'])) {
             WP_CLI::debug('Blocking access to the htaccess.', 'secure');
             (new BlockAccessToHtaccess($assoc_args))->output();
         }
 
-        if(in_array($blockPart, ['all', 'xmlrpc'])) {
+        if (in_array($blockPart, ['all', 'xmlrpc'])) {
             WP_CLI::debug('Blocking access to the xmlrpc.', 'secure');
             (new BlockAccessToXmlRpc($assoc_args))->output();
         }
 
         //Custom files and directories blocking
-        if($blockPart === 'custom' && isset($assoc_args['files'])) {
+        if ($blockPart === 'custom' && isset($assoc_args['files'])) {
             (new BlockAccessToCustomSensitiveFiles($assoc_args))->output();
         }
 
-        if($blockPart === 'custom' && isset($assoc_args['directories'])) {
+        if ($blockPart === 'custom' && isset($assoc_args['directories'])) {
             (new BlockAccessToSensitiveDirectories($assoc_args))->output();
         }
     }
@@ -299,7 +305,8 @@ class SecureCommand extends WP_CLI_Command {
      *
      * @throws WP_CLI\ExitException
      */
-    public function block_author_scanning(array $args, array $assoc_args) : void {
+    public function blockAuthorScanning(array $args, array $assoc_args): void
+    {
         (new BlockAuthorScanning($assoc_args))->output();
     }
 
@@ -337,7 +344,8 @@ class SecureCommand extends WP_CLI_Command {
      *
      * @throws WP_CLI\ExitException
      */
-    public function add_security_headers(array $args, array $assoc_args) : void {
+    public function addSecurityHeaders(array $args, array $assoc_args): void
+    {
         (new AddSecurityHeaders($assoc_args))->output();
     }
 
@@ -368,7 +376,8 @@ class SecureCommand extends WP_CLI_Command {
      *
      * @throws WP_CLI\ExitException
      */
-    public function flush(array $args, array $assoc_args) : void {
+    public function flush(array $args, array $assoc_args): void
+    {
         (new Flush($assoc_args))->output();
     }
 
@@ -392,7 +401,8 @@ class SecureCommand extends WP_CLI_Command {
      * @subcommand integrity-scan
      * @when       before_wp_load
      */
-    public function integrity_scan(array $args, array $assoc_args) : void {
+    public function integrityScan(array $args, array $assoc_args): void
+    {
         WP_CLI::runcommand('core verify-checksums');
     }
 
@@ -412,7 +422,8 @@ class SecureCommand extends WP_CLI_Command {
      * @when       before_wp_load
      *
      */
-    public function disable_file_editor(array $args, array $assoc_args) : void {
+    public function disableFileEditor(array $args, array $assoc_args): void
+    {
         WP_CLI::runcommand('config set DISALLOW_FILE_EDIT ' . !isset($assoc_args['remove']));
     }
 
@@ -432,7 +443,8 @@ class SecureCommand extends WP_CLI_Command {
      * @subcommand fix-permissions
      * @when before_wp_load
      */
-    public function fix_permissions() : void {
+    public function fixPermissions(): void
+    {
         (new FixFileAndDirPermissions())->output();
     }
 
@@ -451,7 +463,8 @@ class SecureCommand extends WP_CLI_Command {
      * @return void
      * @throws WP_CLI\ExitException
      */
-    public function all(array $args, array $assoc_args) : void {
+    public function all(array $args, array $assoc_args): void
+    {
         (new DisableDirectoryBrowsing($assoc_args))->output();
         (new BlockPhpExecutionInPlugins($assoc_args))->output();
         (new BlockPhpExecutionInUploads($assoc_args))->output();
@@ -464,6 +477,6 @@ class SecureCommand extends WP_CLI_Command {
         (new BlockAuthorScanning($assoc_args))->output();
         (new FixFileAndDirPermissions())->output();
         (new AddSecurityHeaders($assoc_args))->output();
-        $this->disable_file_editor($args, $assoc_args);
+        $this->disableFileEditor($args, $assoc_args);
     }
 }

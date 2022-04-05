@@ -2,15 +2,16 @@
 
 namespace WP_CLI_Secure;
 
-class RuleContent {
-
+class RuleContent
+{
     public array $content;
     public array $templateVars;
 
     /**
      * @param array $content The rule file's content.
      */
-    public function __construct(array $content, array $templateVars) {
+    public function __construct(array $content, array $templateVars)
+    {
         $this->content = $content;
         $this->templateVars = $templateVars;
     }
@@ -18,29 +19,30 @@ class RuleContent {
     /**
      * @return array
      */
-    public function getContent() : array {
-        if ( empty( $this->templateVars ) ) {
+    public function getContent(): array
+    {
+        if (empty($this->templateVars)) {
             return $this->content;
         }
 
         $result = '';
-        $templateContent = implode( PHP_EOL, $this->content );
+        $templateContent = implode(PHP_EOL, $this->content);
 
-        foreach ( $this->templateVars as $var => $replacements ) {
+        foreach ($this->templateVars as $var => $replacements) {
             $tmp_result = $templateContent;
-            foreach ( $replacements as $key => $replacement ) {
-                if ( preg_match( '/.+\/.+/', $key ) ) {
-                    $tmp_result = implode( PHP_EOL, $replacement );
-                    $tmp_result = str_replace( '{{file}}', $key, $tmp_result );
+            foreach ($replacements as $key => $replacement) {
+                if (preg_match('/.+\/.+/', $key)) {
+                    $tmp_result = implode(PHP_EOL, $replacement);
+                    $tmp_result = str_replace('{{file}}', $key, $tmp_result);
                 } else {
-                    $tmp_result = str_replace( sprintf( '{{%s}}', $key ), $replacement, $tmp_result );
+                    $tmp_result = str_replace(sprintf('{{%s}}', $key), $replacement, $tmp_result);
                 }
             }
 
             $result .= $tmp_result;
         }
 
-        $result = explode( PHP_EOL, $result );
+        $result = explode(PHP_EOL, $result);
 
         return $result;
     }
