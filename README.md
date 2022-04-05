@@ -23,7 +23,7 @@ wp secure flush
 ```
 
 ### Add Security Headers
-Adds the HSTS, Referrer-Policy, X-Content-Type-Options, X-Frame-Options and X-XSS-Protection
+Adds the HSTS, Referrer-Policy, X-Content-Type-Options and X-Frame-Options
 
 You can choose to add all above or only one or more by using `--headers` argument.
 

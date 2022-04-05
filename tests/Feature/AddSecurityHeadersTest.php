@@ -25,7 +25,6 @@ class AddSecurityHeadersTest extends BaseTestCase {
         $this->assertNotEmpty($response->getHeaderLine( 'Referrer-Policy' ));
         $this->assertNotEmpty($response->getHeaderLine( 'x-content-type-options' ));
         $this->assertNotEmpty($response->getHeaderLine( 'X-Frame-Options' ));
-        $this->assertNotEmpty($response->getHeaderLine( 'X-XSS-Protection' ));
     }
 
     public function testItWillContainAllHeadersOnApache() : void {
@@ -35,6 +34,5 @@ class AddSecurityHeadersTest extends BaseTestCase {
         $this->assertNotEmpty($response->getHeaderLine( 'Referrer-Policy' ));
         $this->assertNotEmpty($response->getHeaderLine( 'x-content-type-options' ));
         $this->assertNotEmpty($response->getHeaderLine( 'X-Frame-Options' ));
-        $this->assertNotEmpty($response->getHeaderLine( 'X-XSS-Protection' ));
     }
 }
