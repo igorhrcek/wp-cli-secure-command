@@ -6,7 +6,7 @@ class FixFileAndDirPermissions {
     /**
      * @var int Default permission mask for the file
      */
-    public int $filePermissions = 0666;
+    public int $filePermissions = 0644;
 
     /**
      * @var int Default permission mask for the directory

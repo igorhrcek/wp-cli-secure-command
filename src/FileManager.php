@@ -262,7 +262,7 @@ class FileManager {
      *
      * @return bool
      */
-    public function createFile(int $permissions = 0666) : bool {
+    public function createFile(int $permissions = 0644) : bool {
         if(!$this->fileExist()) {
             $path = explode("/", $this->path);
             $fileName = $path[count($path) - 1];

@@ -16,7 +16,7 @@ final class FileWritableTest extends BaseTestCase {
     }
 
     public function testFileIsWritable(): void {
-        $writableFile = FileHelper::create('.htaccess', 0666);
+        $writableFile = FileHelper::create('.htaccess', 0644);
         $this->root->addChild($writableFile);
 
         $nonWritableFile = FileHelper::create('nginx.conf', 0755);
