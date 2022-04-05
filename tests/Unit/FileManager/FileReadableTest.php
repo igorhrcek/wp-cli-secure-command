@@ -17,7 +17,7 @@ final class FileReadableTest extends BaseTestCase {
 
     public function testFileIsWritable(): void {
         $this->expectException(FileIsNotReadable::class);
-        $readableFile = FileHelper::create('.htaccess', 0666);
+        $readableFile = FileHelper::create('.htaccess', 0644);
         $this->root->addChild($readableFile);
 
         $unreadableFile = FileHelper::create('nginx.conf', 0000);

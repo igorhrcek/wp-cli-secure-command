@@ -144,7 +144,7 @@ wp secure fix-permissions
 ```
 
 Use this command to verify that the permissions of all files and directories are set according the WordPress recommendations.
-This command will set **0666** to all files and **0755** to all folders inside WordPress installation.
+This command will set **0644** to all files and **0755** to all folders inside WordPress installation.
 
 **IMPORTANT: Don't use this command if you don't know what you are doing here!**
 
