@@ -152,12 +152,11 @@ class FileManager {
     /**
      * Remove ghost Unicode spaces and other unnecessary stuff (<200b><200c>)
      *
-     * @param $content
+     * @param string|array $content
      *
      * @return array|string
      */
-    private static function removeZeroSpace($content)
-    {
+    private static function removeZeroSpace($content) {
         if(is_array($content)) {
             return array_map([static::class, 'removeZeroSpace'], $content);
         }
@@ -229,7 +228,7 @@ class FileManager {
         }
 
         if(count($result) === 1) {
-            return trim($result[0]);
+            return [trim($result[0])];
         }
 
         return array_filter($result);

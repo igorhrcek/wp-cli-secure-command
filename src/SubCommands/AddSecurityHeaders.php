@@ -24,6 +24,7 @@ class AddSecurityHeaders extends SubCommand {
             }
             $headers = array_map( 'trim', $headers );
 
+            $headers_array = [];
             foreach ( $headers as $h ) {
                 $header = '';
                 $value = '';
@@ -36,8 +37,7 @@ class AddSecurityHeaders extends SubCommand {
                 if ( empty( $header ) ) {
                     continue;
                 }
-                $headers_array[] =
-                    [
+                $headers_array[] = [
                         'header' => $header,
                         'value' => $value
                     ];

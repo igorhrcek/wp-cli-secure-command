@@ -102,18 +102,18 @@ class SubCommand {
      * Reads rule template file. Depending on output type, returns an array
      *
      * @param boolean $loadVars Whether to load the template vars or not.
-     * @param boolean $template Template name to return instead of the loaded one.
-     * 
-     * @return string|array
+     * @param string  $template Template name to return instead of the loaded one.
+     *
+     * @return array
      */
-    protected function setRuleContent( bool $loadVars = true, bool|string $template = false ) : string|array {
+    protected function setRuleContent( bool $loadVars = true, string $template = '' ) : array {
         //Return an empty array in case when the executed command does not require a template
-        if($this->ruleTemplate === '' && ! $template ) {
+        if($this->ruleTemplate === '' && !$template ) {
             return [];
         }
 
         $templateFilePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Templates' . DIRECTORY_SEPARATOR . $this->serverType . DIRECTORY_SEPARATOR .
-            ( $template ? $template : $this->ruleTemplate ) . '.tpl';
+            ( $template !== '' ? $template : $this->ruleTemplate ) . '.tpl';
 
         $result = [];
         $file = new \SplFileObject($templateFilePath);
@@ -124,7 +124,7 @@ class SubCommand {
         }
         unset($file);
 
-        if ( $loadVars ) {
+        if ($loadVars) {
             //Combine templates and command arguments, if any
             //This is used for block-access command
             $result = new RuleContent( $result, $this->getTemplateVars() );

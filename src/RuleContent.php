@@ -9,18 +9,16 @@ class RuleContent {
 
     /**
      * @param array $content The rule file's content.
-     * @param array $arguments The CLI arguments.
      */
-    public function __construct(array $content, array $templateVars ) {
+    public function __construct(array $content, array $templateVars) {
         $this->content = $content;
         $this->templateVars = $templateVars;
     }
 
     /**
-     * @return bool
+     * @return array
      */
     public function getContent() : array {
-
         if ( empty( $this->templateVars ) ) {
             return $this->content;
         }
@@ -38,6 +36,7 @@ class RuleContent {
                     $tmp_result = str_replace( sprintf( '{{%s}}', $key ), $replacement, $tmp_result );
                 }
             }
+
             $result .= $tmp_result;
         }
 
