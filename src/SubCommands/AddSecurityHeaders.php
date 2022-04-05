@@ -14,8 +14,7 @@ class AddSecurityHeaders extends SubCommand {
             'Strict-Transport-Security' => '"max-age=63072000; includeSubDomains; preload"',
             'Referrer-Policy' => 'strict-origin-when-cross-origin',
             'X-Content-Type-Options' => 'nosniff',
-            'X-Frame-Options' => 'SAMEORIGIN',
-            'X-XSS-Protection' => '"1; mode=block"'
+            'X-Frame-Options' => 'SAMEORIGIN'
         ];
 
         $headers = $this->commandArguments['headers'] ?? array_keys($default_headers);
