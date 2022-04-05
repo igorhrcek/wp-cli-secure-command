@@ -45,7 +45,7 @@ class WriteTest extends BaseTestCase {
         $content2 = file_get_contents(getcwd() . '/tests/assets/htaccess-secured.txt');
         $this->file = FileHelper::create('.htaccess', 0755, $content);
         $this->file2 = FileHelper::create('.htaccess2', 0777, $content);
-        $this->file3 = FileHelper::create('.htaccess-secured', 0644, $content2);
+        $this->file3 = FileHelper::create('.htaccess-secured', 0666, $content2);
         $this->root->addChild($this->file);
         $this->root->addChild($this->file2);
         $this->root->addChild($this->file3);

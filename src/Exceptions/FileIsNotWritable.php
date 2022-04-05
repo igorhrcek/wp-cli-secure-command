@@ -4,7 +4,8 @@ namespace WP_CLI_Secure\Exceptions;
 
 use Exception;
 
-class FileIsNotWritable extends Exception {
+class FileIsNotWritable extends Exception
+{
     /**
      * @var string
      */

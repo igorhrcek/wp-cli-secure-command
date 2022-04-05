@@ -6,3 +6,5 @@ vendor/
 nginx.conf
 .DS_Store
 wp/
+composer.lock
+wp_cli_secure.iml
