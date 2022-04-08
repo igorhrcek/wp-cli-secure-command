@@ -30,11 +30,12 @@ jobs:
           composer install
 
       - name: Execute one secure command
-        run: vendor/bin/wp secure add-security-headers --file-path=/wordpress
+        run: vendor/bin/wp secure add-security-headers
 
       - name: Debug
         run: |
-          cat /wordpress/.htaccess
+          cat .htaccess
+          ls -la /wordpress
           pwd
           docker ps
 
