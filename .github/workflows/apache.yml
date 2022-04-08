@@ -28,9 +28,11 @@ jobs:
           mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
       - uses: actions/checkout@v2
+        with:
+          path: 'codebase'
       - name: Install dependencies
         run: |
-          composer install
+          codebase/composer install
 
 #      - name: Setup WordPress configuration
 #        run: |
@@ -44,7 +46,7 @@ jobs:
 #          vendor/bin/wp core install --url=http://localhost --title="WordPress" --admin_user=admin --admin_email=admin@example.com --admin_password=pass --skip-email  --path=wordpress
 
       - name: Execute one secure command
-        run: vendor/bin/wp secure add-security-headers
+        run: codebase/vendor/bin/wp secure add-security-headers
 
       - name: Debug
         run: |
