@@ -32,7 +32,7 @@ jobs:
           path: 'codebase'
       - name: Install dependencies
         run: |
-          codebase/composer install
+          ${{ github.workspace }}/codebase/composer install
 
 #      - name: Setup WordPress configuration
 #        run: |
