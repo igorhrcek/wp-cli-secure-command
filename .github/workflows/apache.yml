@@ -63,5 +63,5 @@ jobs:
 
       - name: Debug
         run: |
-          curl http://localhost
+          curl http://localhost:8080/
 
