@@ -63,5 +63,5 @@ jobs:
 
       - name: Debug
         run: |
-          ${{ github.workspace }}/codebase/vendor/bin/wp plugin list --path=${{ github.workspace }}/wordpress
+          curl http://localhost
 
