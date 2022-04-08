@@ -27,18 +27,26 @@ jobs:
           sudo systemctl start mysql.service
           mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
-      - name: Resrtart WordPress container
-        run: docker restart wordpress
-
       - uses: actions/checkout@v2
       - name: Install dependencies
         run: |
           composer install
+
+      - name: Setup WordPress configuration
+        run: |
+          vendor/bin/wp config create --dbname=${{ env.DB_DATABASE }} --dbuser=${{ env.DB_USER }} --dbpass=${{ env.DB_PASSWORD }} --dbhost=localhost --force
+
+      - name: Restart WordPress container
+        run: docker restart wordpress
+
+      - name: Install WordPress
+        run: |
+          vendor/bin/wp core install --url=http://localhost --title="WordPress" --admin_user=admin --admin_email=admin@example.com --admin_password=pass --skip-email
 
       - name: Execute one secure command
         run: vendor/bin/wp secure add-security-headers
 
       - name: Debug
         run: |
-          mysql -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }} testdb <<< 'SHOW TABLES'
+          vendor/bin/wp plugin list
 
