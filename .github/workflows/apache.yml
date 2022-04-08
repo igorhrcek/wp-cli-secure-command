@@ -25,6 +25,8 @@ jobs:
           - /wordpress:/var/www/html
         ports:
           - 8080:80
+        options:
+          --name wordpress
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
@@ -37,4 +39,5 @@ jobs:
       - name: Debug
         run: |
           curl -I http://localhost:8080/
+          docker ps
 
