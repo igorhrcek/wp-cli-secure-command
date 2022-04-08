@@ -22,24 +22,24 @@ jobs:
       DB_USER: root
       DB_PASSWORD: root
     steps:
-#      - name: Start MYSQL
-#        run: |
-#          sudo systemctl start mysql.service
-#          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+      - name: Start MYSQL
+        run: |
+          sudo systemctl start mysql.service
+          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
       - uses: actions/checkout@v2
         with:
           path: 'codebase'
-#      - name: Install dependencies
-#        run: |
-#          codebase/composer install
+      - name: Install dependencies
+        run: |
+          codebase/composer install
 
 #      - name: Setup WordPress configuration
 #        run: |
 #          vendor/bin/wp config create --dbname=${{ env.DB_DATABASE }} --dbuser=${{ env.DB_USER }} --dbpass=${{ env.DB_PASSWORD }} --dbhost=localhost --force --path=wordpress
 
-#      - name: Restart WordPress container
-#        run: docker restart wordpress
+      - name: Restart WordPress container
+        run: docker restart wordpress
 
 #      - name: Install WordPress
 #        run: |
@@ -50,5 +50,5 @@ jobs:
 
       - name: Debug
         run: |
-          ls -la ${{ github.workspace }}
+          ${{ github.workspace }}/codebase/vendor/bin/wp plugin list --path=${{ github.workspace }}/wordpress
 
