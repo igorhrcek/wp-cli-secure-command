@@ -17,7 +17,7 @@ jobs:
       wordpress:
         image: wordpress
         env:
-          WORDPRESS_DB_HOST: 127.0.0.1
+          WORDPRESS_DB_HOST: mysql
           WORDPRESS_DB_USER: testuser
           WORDPRESS_DB_PASSWORD: testpassword
           WORDPRESS_DB_NAME: testdb
