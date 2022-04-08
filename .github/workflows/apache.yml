@@ -40,7 +40,7 @@ jobs:
 
       - name: Make .htaccess writebable
         run: |
-          sudo chown 666 ${{ github.workspace }}/wordpress/.htaccess
+          sudo chmod 666 ${{ github.workspace }}/wordpress/.htaccess
 
       - name: Execute one secure command
         run: codebase/vendor/bin/wp secure block-access sensitive-files --file-path=${{ github.workspace }}/wordpress/.htaccess
