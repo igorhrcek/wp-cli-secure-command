@@ -38,6 +38,7 @@ jobs:
 
       - name: Debug
         run: |
+          cat /wordpress/wp-config.php
           curl -I http://localhost:8080/
-          docker ps
+          docker logs wordpress
 
