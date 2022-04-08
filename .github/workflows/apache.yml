@@ -34,7 +34,7 @@ jobs:
 
       - name: Setup WordPress configuration
         run: |
-          ${{ github.workspace }}/codebase/vendor/bin/wp config create --dbname=${{ env.DB_DATABASE }} --dbuser=${{ env.DB_USER }} --dbpass=${{ env.DB_PASSWORD }} --dbhost=host.docker.internal --force --path=${{ github.workspace }}/wordpress
+          ${{ github.workspace }}/codebase/vendor/bin/wp config create --dbname=${{ env.DB_DATABASE }} --dbuser=${{ env.DB_USER }} --dbpass=${{ env.DB_PASSWORD }} --dbhost=mysql --force --path=${{ github.workspace }}/wordpress
 
       - name: Restart WordPress container
         run: docker restart wordpress
