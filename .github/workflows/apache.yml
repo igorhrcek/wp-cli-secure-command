@@ -34,8 +34,5 @@ jobs:
 
       - name: Debug
         run: |
-          cat .htaccess
-          ls -la /wordpress
-          pwd
-          docker ps
+          curl -I http://localhost
 
