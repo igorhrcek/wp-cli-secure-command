@@ -9,8 +9,8 @@ jobs:
         env:
           WORDPRESS_DB_HOST: localhost
           WORDPRESS_DB_USER: root
-          WORDPRESS_DB_PASSWORD: testpassword
-          WORDPRESS_DB_NAME: root
+          WORDPRESS_DB_PASSWORD: root
+          WORDPRESS_DB_NAME: testdb
         volumes:
           - /wordpress:/var/www/html
         ports:
