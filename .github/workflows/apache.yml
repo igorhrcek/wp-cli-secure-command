@@ -11,8 +11,6 @@ jobs:
           WORDPRESS_DB_USER: root
           WORDPRESS_DB_PASSWORD: root
           WORDPRESS_DB_NAME: testdb
-#        volumes:
-#          - wordpress:/var/www/html
         ports:
           - 8080:80
         options:
@@ -34,16 +32,16 @@ jobs:
         run: |
           cd ${{ github.workspace }}/codebase && composer install
 
-#      - name: Setup WordPress configuration
-#        run: |
-#          vendor/bin/wp config create --dbname=${{ env.DB_DATABASE }} --dbuser=${{ env.DB_USER }} --dbpass=${{ env.DB_PASSWORD }} --dbhost=localhost --force --path=wordpress
+      - name: Setup WordPress configuration
+        run: |
+          ${{ github.workspace }}/codebase/vendor/bin/wp config create --dbname=${{ env.DB_DATABASE }} --dbuser=${{ env.DB_USER }} --dbpass=${{ env.DB_PASSWORD }} --dbhost=host.docker.internal --force --path=${{ github.workspace }}/wordpress
 
       - name: Restart WordPress container
         run: docker restart wordpress
 
-#      - name: Install WordPress
-#        run: |
-#          vendor/bin/wp core install --url=http://localhost --title="WordPress" --admin_user=admin --admin_email=admin@example.com --admin_password=pass --skip-email  --path=wordpress
+      - name: Install WordPress
+        run: |
+          ${{ github.workspace }}/codebase/vendor/bin/wp core install --url=http://localhost --title="WordPress" --admin_user=admin --admin_email=admin@example.com --admin_password=pass --skip-email  --path=${{ github.workspace }}/wordpress
 
 #      - name: Execute one secure command
 #        run: codebase/vendor/bin/wp secure add-security-headers
