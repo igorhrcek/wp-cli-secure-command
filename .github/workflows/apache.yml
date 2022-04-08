@@ -4,30 +4,32 @@ jobs:
   tests:
     runs-on: 'ubuntu-latest'
     services:
-      mysql:
-        image: mariadb
-        env:
-          MYSQL_DATABASE: testdb
-          MYSQL_USER: testuser
-          MYSQL_PASSWORD: testpassword
-          MYSQL_ROOT_PASSWORD: rootpassword
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       wordpress:
         image: wordpress
         env:
-          WORDPRESS_DB_HOST: mysql
-          WORDPRESS_DB_USER: testuser
+          WORDPRESS_DB_HOST: localhost
+          WORDPRESS_DB_USER: root
           WORDPRESS_DB_PASSWORD: testpassword
-          WORDPRESS_DB_NAME: testdb
+          WORDPRESS_DB_NAME: root
         volumes:
           - /wordpress:/var/www/html
         ports:
           - 8080:80
         options:
           --name wordpress
+    env:
+      DB_DATABASE: testdb
+      DB_USER: root
+      DB_PASSWORD: root
     steps:
+      - name: Start MYSQL
+        run: |
+          sudo systemctl start mysql.service
+          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+
+      - name: Resrtart WordPress container
+        run: docker restart wordpress
+
       - uses: actions/checkout@v2
       - name: Install dependencies
         run: |
