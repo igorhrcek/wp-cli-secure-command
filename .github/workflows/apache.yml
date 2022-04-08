@@ -63,6 +63,5 @@ jobs:
 
       - name: Debug
         run: |
-          curl http://localhost:8080/
-          cat ${{ github.workspace }}/wordpress/.htaccess
+          curl http://localhost:8080/hello-world
 
