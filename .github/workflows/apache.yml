@@ -4,26 +4,41 @@ jobs:
   tests:
     runs-on: 'ubuntu-latest'
     services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: "rootpass"
+          MYSQL_USER: "wordpress"
+          MYSQL_PASSWORD: "wordpress"
+          MYSQL_DATABASE: "wordpress"
+        ports:
+          - 3306:3306
+        options: >-
+          --mount type=tmpfs,destination=/var/lib/mysql
+          --health-cmd "mysqladmin ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
       wordpress:
         image: wordpress
         env:
-          WORDPRESS_DB_HOST: host.docker.internal
-          WORDPRESS_DB_USER: root
-          WORDPRESS_DB_PASSWORD: root
-          WORDPRESS_DB_NAME: testdb
+          WORDPRESS_DB_HOST: mysql
+          WORDPRESS_DB_USER: wordpress
+          WORDPRESS_DB_PASSWORD: wordpress
+          WORDPRESS_DB_NAME: wordpress
         ports:
           - 8080:80
         options:
           --name wordpress -v ${{ github.workspace }}/wordpress:/var/www/html
-    env:
-      DB_DATABASE: testdb
-      DB_USER: root
-      DB_PASSWORD: root
+#    env:
+#      DB_DATABASE: testdb
+#      DB_USER: root
+#      DB_PASSWORD: root
     steps:
-      - name: Start MYSQL
-        run: |
-          sudo systemctl start mysql.service
-          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+#      - name: Start MYSQL
+#        run: |
+#          sudo systemctl start mysql.service
+#          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
       - uses: actions/checkout@v2
         with:
@@ -32,16 +47,16 @@ jobs:
         run: |
           cd ${{ github.workspace }}/codebase && composer install
 
-      - name: Setup WordPress configuration
-        run: |
-          ${{ github.workspace }}/codebase/vendor/bin/wp config create --dbname=${{ env.DB_DATABASE }} --dbuser=${{ env.DB_USER }} --dbpass=${{ env.DB_PASSWORD }} --dbhost=mysql --force --path=${{ github.workspace }}/wordpress
-
-      - name: Restart WordPress container
-        run: docker restart wordpress
-
-      - name: Install WordPress
-        run: |
-          ${{ github.workspace }}/codebase/vendor/bin/wp core install --url=http://localhost --title="WordPress" --admin_user=admin --admin_email=admin@example.com --admin_password=pass --skip-email  --path=${{ github.workspace }}/wordpress
+#      - name: Setup WordPress configuration
+#        run: |
+#          ${{ github.workspace }}/codebase/vendor/bin/wp config create --dbname=${{ env.DB_DATABASE }} --dbuser=${{ env.DB_USER }} --dbpass=${{ env.DB_PASSWORD }} --dbhost=mysql --force --path=${{ github.workspace }}/wordpress
+#
+#      - name: Restart WordPress container
+#        run: docker restart wordpress
+#
+#      - name: Install WordPress
+#        run: |
+#          ${{ github.workspace }}/codebase/vendor/bin/wp core install --url=http://localhost --title="WordPress" --admin_user=admin --admin_email=admin@example.com --admin_password=pass --skip-email  --path=${{ github.workspace }}/wordpress
 
 #      - name: Execute one secure command
 #        run: codebase/vendor/bin/wp secure add-security-headers
