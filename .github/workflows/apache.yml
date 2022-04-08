@@ -23,6 +23,8 @@ jobs:
           WORDPRESS_DB_NAME: testdb
         volumes:
           - /wordpress:/var/www/html
+        ports:
+          - 8080:80
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
@@ -34,5 +36,5 @@ jobs:
 
       - name: Debug
         run: |
-          curl -I http://127.0.0.1
+          curl -I 127.0.0.1:8080
 
