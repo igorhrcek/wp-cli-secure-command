@@ -48,5 +48,5 @@ jobs:
 
       - name: Debug
         run: |
-          vendor/bin/wp plugin list
+          vendor/bin/wp plugin list --path=wordpress
 
