@@ -36,5 +36,7 @@ jobs:
 
       - name: Debug
         run: |
-          curl -I 127.0.0.1:8080
+          curl -I http://localhost:8080/readme.html
+          curl -I http://localhost:8080/wp-admin
+          
 
