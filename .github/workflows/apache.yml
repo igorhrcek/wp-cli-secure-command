@@ -34,14 +34,14 @@ jobs:
 
       - name: Setup WordPress configuration
         run: |
-          vendor/bin/wp config create --dbname=${{ env.DB_DATABASE }} --dbuser=${{ env.DB_USER }} --dbpass=${{ env.DB_PASSWORD }} --dbhost=localhost --force
+          vendor/bin/wp config create --dbname=${{ env.DB_DATABASE }} --dbuser=${{ env.DB_USER }} --dbpass=${{ env.DB_PASSWORD }} --dbhost=localhost --force --path=/wordpress
 
       - name: Restart WordPress container
         run: docker restart wordpress
 
       - name: Install WordPress
         run: |
-          vendor/bin/wp core install --url=http://localhost --title="WordPress" --admin_user=admin --admin_email=admin@example.com --admin_password=pass --skip-email
+          vendor/bin/wp core install --url=http://localhost --title="WordPress" --admin_user=admin --admin_email=admin@example.com --admin_password=pass --skip-email  --path=/wordpress
 
       - name: Execute one secure command
         run: vendor/bin/wp secure add-security-headers
