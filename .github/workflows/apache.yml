@@ -16,7 +16,7 @@ jobs:
         ports:
           - 8080:80
         options:
-          --name wordpress -v ${{ GITHUB_WORKSPACE }}/wordpress:/var/www/html
+          --name wordpress -v ${{ github.workspace }}/wordpress:/var/www/html
     env:
       DB_DATABASE: testdb
       DB_USER: root
