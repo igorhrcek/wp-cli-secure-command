@@ -22,7 +22,7 @@ jobs:
           WORDPRESS_DB_PASSWORD: testpassword
           WORDPRESS_DB_NAME: testdb
         volumes:
-          - $HOME/wordpress:/var/www/html
+          - /wordpress:/var/www/html
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
@@ -30,8 +30,8 @@ jobs:
           composer install
 
       - name: Execute one secure command
-        run: wp secure add-security-headers --file-path=$HOME/wordpress
+        run: wp secure add-security-headers --file-path=/wordpress
 
       - name: Debug
-        run: cat $HOME/wordpress/.htaccess
+        run: cat /wordpress/.htaccess
 
