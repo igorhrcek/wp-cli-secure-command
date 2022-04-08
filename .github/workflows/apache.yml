@@ -34,5 +34,5 @@ jobs:
 
       - name: Debug
         run: |
-          curl -I http://localhost
+          curl -I http://127.0.0.1
 
