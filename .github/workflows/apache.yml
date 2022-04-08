@@ -40,5 +40,5 @@ jobs:
 
       - name: Debug
         run: |
-          vendor/bin/wp plugin list --path=/wordpress
+          mysql -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }} testdb <<< 'SHOW TABLES'
 
