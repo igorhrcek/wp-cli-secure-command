@@ -12,7 +12,7 @@ jobs:
           WORDPRESS_DB_PASSWORD: root
           WORDPRESS_DB_NAME: testdb
         volumes:
-          - wordpress:/var/www/html
+          - ${{ env.GITHUB_ACTION_PATH }}/wordpress:/var/www/html
         ports:
           - 8080:80
         options:
@@ -48,5 +48,5 @@ jobs:
 
       - name: Debug
         run: |
-          vendor/bin/wp plugin list --path=wordpress
+          vendor/bin/wp plugin list --path=${{ env.GITHUB_ACTION_PATH }}/wordpress
 
