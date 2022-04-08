@@ -22,10 +22,10 @@ jobs:
       DB_USER: root
       DB_PASSWORD: root
     steps:
-      - name: Start MYSQL
-        run: |
-          sudo systemctl start mysql.service
-          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+#      - name: Start MYSQL
+#        run: |
+#          sudo systemctl start mysql.service
+#          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
       - uses: actions/checkout@v2
         with:
@@ -50,5 +50,5 @@ jobs:
 
       - name: Debug
         run: |
-          ls -la $HOME
+          ls -la ${{ github.workspace }}
 
