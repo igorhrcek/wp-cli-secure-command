@@ -46,10 +46,7 @@ jobs:
       - name: Make .htaccess and nginx.conf writebable
         run: |
           sudo chown -R $USER:$USER ${{ github.workspace }}/wordpress
-          stat ${{ github.workspace }}/wordpress
-          ls -la ${{ github.workspace }}/wordpress
-          whoami
 
-#      - name: Run PHPUnit tests
-#        run: |
-#          cd ${{ github.workspace }}/codebase && vendor/bin/phpunit --testdox --filter SecurityRulesApacheTest
+      - name: Run PHPUnit tests
+        run: |
+          cd ${{ github.workspace }}/codebase && vendor/bin/phpunit --testdox --filter SecurityRulesApacheTest
