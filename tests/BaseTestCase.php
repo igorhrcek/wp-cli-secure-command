@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Dotenv\Dotenv;
 use GuzzleHttp\Client;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
@@ -77,7 +78,7 @@ class BaseTestCase extends TestCase {
         /**
          * Configuration for nginx and apache testing
          */
-        $this->env = \Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+        $this->env = Dotenv::createImmutable(dirname(__DIR__));
         $this->env->load();
 
         $this->setupEnvironmentForApacheTests();

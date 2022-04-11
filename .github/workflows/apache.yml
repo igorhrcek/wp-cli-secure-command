@@ -37,11 +37,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd ${{ github.workspace }}/codebase && composer install
+          cd ${{ github.workspace }}/codebase && composer install && composer dump-autoload
 
       - name: Copy .env files
         run: |
-          cp ${{ github.workspace }}/codebase/.env.ci ${{ github.workspace }}/codebase/.env
+          cp -rf ${{ github.workspace }}/codebase/.env.ci ${{ github.workspace }}/codebase/.env
 
       - name: Make .htaccess writebable
         run: |
