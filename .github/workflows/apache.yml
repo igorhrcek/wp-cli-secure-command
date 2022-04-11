@@ -54,4 +54,4 @@ jobs:
 
       - name: Run debug
         run: |
-          curl -I http://localhost:8080
+          cat ${{ github.workspace }}/wordpress/.htaccess
