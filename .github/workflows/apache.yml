@@ -20,7 +20,7 @@ jobs:
           --health-timeout 5s
           --health-retries 3
       wordpress:
-        image: wordpress
+        image: ghcr.io/igorhrcek/wordpress-docker-apache/wordpress-docker-apache:latest
         env:
           WORDPRESS_DB_HOST: mysql
           WORDPRESS_DB_USER: wordpress
@@ -45,8 +45,8 @@ jobs:
 
       - name: Make .htaccess and nginx.conf writebable
         run: |
-          sudo chmod 777 ${{ github.workspace }}/wordpress
-          sudo chmod 666 ${{ github.workspace }}/wordpress/.htaccess
+#          sudo chmod 777 ${{ github.workspace }}/wordpress
+#          sudo chmod 666 ${{ github.workspace }}/wordpress/.htaccess
           stat ${{ github.workspace }}/wordpress
           ls -la ${{ github.workspace }}/wordpress
           whoami
