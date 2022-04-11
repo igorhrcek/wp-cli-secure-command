@@ -54,4 +54,5 @@ jobs:
 
       - name: Run debug
         run: |
+          docker logs wordpress
           cat ${{ github.workspace }}/wordpress/.htaccess
