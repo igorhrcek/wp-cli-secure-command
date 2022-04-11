@@ -49,4 +49,4 @@ jobs:
 
       - name: Run PHPUnit tests
         run: |
-          ${{ github.workspace }}/codebase/vendor/bin/phpunit --testdox --filter SecurityRulesApacheTest
+          ${{ github.workspace }}/codebase && vendor/bin/phpunit --testdox --filter SecurityRulesApacheTest
