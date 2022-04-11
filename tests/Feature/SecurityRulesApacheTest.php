@@ -64,7 +64,7 @@ class SecurityRulesApacheTest extends BaseTestCase {
     /**
      * @group Htaccess
      */
-    public function testItWillReturnHttp403OnApacheWhenAccessingApacheConfigFile() : void {
+    public function testItWillReturnHttp403WhenAccessingApacheConfigFile() : void {
         $response = $this->apacheHttpClient->get('.htaccess', ['http_errors' => false]);
         $this->assertEquals(403, $response->getStatusCode());
     }
@@ -72,7 +72,7 @@ class SecurityRulesApacheTest extends BaseTestCase {
     /**
      * @group SensitiveDirectories
      */
-    public function testItWillReturnHttp403OnApacheWhenAccessingGitDirectory() : void {
+    public function testItWillReturnHttp403WhenAccessingGitDirectory() : void {
         $response = $this->apacheHttpClient->get('.git', ['http_errors' => false]);
         $this->assertEquals(403, $response->getStatusCode());
     }
@@ -80,7 +80,7 @@ class SecurityRulesApacheTest extends BaseTestCase {
     /**
      * @group SensitiveDirectories
      */
-    public function testItWillReturnHttp403OnApacheWhenAccessingSvnDirectory() : void {
+    public function testItWillReturnHttp403WhenAccessingSvnDirectory() : void {
         $response = $this->apacheHttpClient->get('svn', ['http_errors' => false]);
         $this->assertEquals(403, $response->getStatusCode());
     }
@@ -88,7 +88,7 @@ class SecurityRulesApacheTest extends BaseTestCase {
     /**
      * @group SensitiveDirectories
      */
-    public function testItWillReturnHttp403OnApacheWhenAccessingCacheDirectory() : void {
+    public function testItWillReturnHttp403WhenAccessingCacheDirectory() : void {
         $response = $this->apacheHttpClient->get('cache', ['http_errors' => false]);
         $this->assertEquals(403, $response->getStatusCode());
     }
@@ -96,7 +96,7 @@ class SecurityRulesApacheTest extends BaseTestCase {
     /**
      * @group SensitiveFiles
      */
-    public function testItWillReturnHttp403OnApacheWhenAccessingReadmeFiles() : void {
+    public function testItWillReturnHttp403WhenAccessingReadmeFiles() : void {
         $response = $this->apacheHttpClient->get('readme.html', ['http_errors' => false]);
         $this->assertEquals(403, $response->getStatusCode());
     }
@@ -104,7 +104,7 @@ class SecurityRulesApacheTest extends BaseTestCase {
     /**
      * @group SensitiveFiles
      */
-    public function testItWillReturnHttp403OnApacheWhenAccessingWpConfigFile() : void {
+    public function testItWillReturnHttp403WhenAccessingWpConfigFile() : void {
         $response = $this->apacheHttpClient->get('wp-config.php', ['http_errors' => false]);
         $this->assertEquals(403, $response->getStatusCode());
     }
@@ -112,7 +112,7 @@ class SecurityRulesApacheTest extends BaseTestCase {
     /**
      * @group SensitiveFiles
      */
-    public function testItWillReturnHttp403OnApacheWhenAccessingWpInstallFile() : void {
+    public function testItWillReturnHttp403WhenAccessingWpInstallFile() : void {
         $response = $this->apacheHttpClient->get('wp-admin/install.php', ['http_errors' => false]);
         $this->assertEquals(403, $response->getStatusCode());
     }
@@ -120,7 +120,7 @@ class SecurityRulesApacheTest extends BaseTestCase {
     /**
      * @group SensitiveFiles
      */
-    public function testItWillReturnHttp403OnApacheWhenAccessingWpUpgradeFile() : void {
+    public function testItWillReturnHttp403WhenAccessingWpUpgradeFile() : void {
         $response = $this->apacheHttpClient->get('wp-admin/upgrade.php', ['http_errors' => false]);
         $this->assertEquals(403, $response->getStatusCode());
     }
@@ -128,7 +128,7 @@ class SecurityRulesApacheTest extends BaseTestCase {
     /**
      * @group XmlRpc
      */
-    public function testItWillReturnHttp403OnApacheWhenAccessingXmlRpcFile() : void {
+    public function testItWillReturnHttp403WhenAccessingXmlRpcFile() : void {
         $response = $this->apacheHttpClient->get('xmlrpc.php', ['http_errors' => false]);
         $this->assertEquals(403, $response->getStatusCode());
     }
@@ -144,7 +144,7 @@ class SecurityRulesApacheTest extends BaseTestCase {
     /**
      * @group PhpInPlugins
      */
-    public function testItWillReturnHttp403OnApacheWhenAccessingPhpFilesInPlugins() : void {
+    public function testItWillReturnHttp403WhenAccessingPhpFilesInPlugins() : void {
         $response = $this->apacheHttpClient->get('wp-content/plugins/hello.php', ['http_errors' => false]);
         $this->assertEquals(403, $response->getStatusCode());
     }
@@ -152,7 +152,7 @@ class SecurityRulesApacheTest extends BaseTestCase {
     /**
      * @group PhpInThemes
      */
-    public function testItWillReturnHttp403OnApacheWhenAccessingPhpFilesInThemesDirectory() : void {
+    public function testItWillReturnHttp403WhenAccessingPhpFilesInThemesDirectory() : void {
         $response = $this->apacheHttpClient->get('wp-content/themes/index.php', ['http_errors' => false]);
         $this->assertEquals(403, $response->getStatusCode());
     }
@@ -160,7 +160,7 @@ class SecurityRulesApacheTest extends BaseTestCase {
     /**
      * @group PhpInUploads
      */
-    public function testItWillReturnHttp403OnApacheWhenAccessingPhpFilesInUploadsDirectory() : void {
+    public function testItWillReturnHttp403WhenAccessingPhpFilesInUploadsDirectory() : void {
         $response = $this->apacheHttpClient->get('wp-content/uploads/index.php', ['http_errors' => false]);
         $this->assertEquals(403, $response->getStatusCode());
     }
@@ -168,17 +168,17 @@ class SecurityRulesApacheTest extends BaseTestCase {
     /**
      * @group PhpInWpIncludes
      */
-    public function testItWillReturnHttp403OnApacheWhenAccessingPhpFilesInWpIncludesDirectory() : void {
+    public function testItWillReturnHttp403WhenAccessingPhpFilesInWpIncludesDirectory() : void {
         $response = $this->apacheHttpClient->get('wp-includes', ['http_errors' => false]);
         $this->assertEquals(403, $response->getStatusCode());
     }
 
-    public function testItWillReturnHttp403OnApacheWhenAccessingPhpFilesInWpIncludesThemeCompatDirectory() : void {
+    public function testItWillReturnHttp403WhenAccessingPhpFilesInWpIncludesThemeCompatDirectory() : void {
         $response = $this->apacheHttpClient->get('wp-includes/theme-compat', ['http_errors' => false]);
         $this->assertEquals(403, $response->getStatusCode());
     }
 
-    public function testItWillReturnHttp403OnApacheWhenAccessingPhpFilesInWpAdminIncludesDirectory() : void {
+    public function testItWillReturnHttp403WhenAccessingPhpFilesInWpAdminIncludesDirectory() : void {
         $response = $this->apacheHttpClient->get('wp-admin/includes', ['http_errors' => false]);
         $this->assertEquals(403, $response->getStatusCode());
     }
