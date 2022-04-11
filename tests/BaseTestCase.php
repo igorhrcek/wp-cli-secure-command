@@ -93,11 +93,11 @@ class BaseTestCase extends TestCase {
         //Remove all secure rules from the configuration
         if(isset($this->nginxAssocArgs['file-path'])) {
             $fileManager = new FileManager($this->nginxAssocArgs['file-path']);
-            $fileManager->clear();
+            //$fileManager->clear();
         }
         if(isset($this->apacheAssocArgs['file-path'])) {
             $fileManager = new FileManager($this->apacheAssocArgs['file-path']);
-            $fileManager->clear();
+            //$fileManager->clear();
         }
     }
 
