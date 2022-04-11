@@ -41,7 +41,7 @@ jobs:
 
       - name: Copy .env files
         run: |
-          cp .env.ci .env
+          cp ${{ github.workspace }}/codebase/.env.ci ${{ github.workspace }}/codebase/.env
 
       - name: Make .htaccess writebable
         run: |
