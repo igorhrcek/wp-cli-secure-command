@@ -45,9 +45,8 @@ jobs:
 
       - name: Make .htaccess and nginx.conf writebable
         run: |
+          sudo chmod 775 ${{ github.workspace }}/wordpress
           sudo chmod 666 ${{ github.workspace }}/wordpress/.htaccess
-          sudo touch ${{ github.workspace }}/wordpress/nginx.conf
-          sudo chmod 666 ${{ github.workspace }}/wordpress/nginx.conf
 
       - name: Run PHPUnit tests
         run: |
