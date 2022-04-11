@@ -34,18 +34,19 @@ jobs:
       - uses: actions/checkout@v2
         with:
           path: 'codebase'
+
       - name: Install dependencies
         run: |
           cd ${{ github.workspace }}/codebase && composer install
+
+      - name: Copy .env files
+        run: |
+          cp .env.ci .env
 
       - name: Make .htaccess writebable
         run: |
           sudo chmod 666 ${{ github.workspace }}/wordpress/.htaccess
 
-      - name: Execute one secure command
-        run: sudo codebase/vendor/bin/wp secure block-php-execution all --file-path=${{ github.workspace }}/wordpress/.htaccess --allow-root
-
-      - name: Debug
+      - name: Run PHPUnit tests
         run: |
-          curl -I http://localhost:8080/wp-content/plugins/index.php
-
+          vendor/bin/phpunit -d memory_limit=1024M --testdox
