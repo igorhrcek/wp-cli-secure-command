@@ -47,10 +47,11 @@ jobs:
         run: |
           sudo chown -R $USER:$USER ${{ github.workspace }}/wordpress
 
+      - name: Run PHPUnit tests
+        continue-on-error: true
+        run: |
+          cd ${{ github.workspace }}/codebase && vendor/bin/phpunit --testdox --filter SecurityRulesApacheTest
+
       - name: Run debug
         run: |
           curl -I http://localhost:8080
-
-#      - name: Run PHPUnit tests
-#        run: |
-#          cd ${{ github.workspace }}/codebase && vendor/bin/phpunit --testdox --filter SecurityRulesApacheTest
