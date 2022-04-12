@@ -240,7 +240,7 @@ class SecureCommand extends WP_CLI_Command
 
         if (in_array($blockPart, ['all', 'sensitive-files'])) {
             WP_CLI::debug('Blocking access to the sensitive files.', 'secure');
-            if(isset($assoc_args['files'])) {
+            if (isset($assoc_args['files'])) {
                 (new BlockAccessToCustomSensitiveFiles($assoc_args))->output();
             } else {
                 (new BlockAccessToSensitiveFiles($assoc_args))->output();
