@@ -29,28 +29,28 @@ jobs:
         ports:
           - 8080:80
         options:
-          --name wordpress -v ${{ github.workspace }}/wordpress:/usr/src/wordpress
+          --name wordpress -v ${{ github.workspace }}/wordpress:/var/www/html
     steps:
-      - uses: actions/checkout@v2
-        with:
-          path: 'codebase'
-
-      - name: Install dependencies
-        run: |
-          cd ${{ github.workspace }}/codebase && composer install && composer dump-autoload
-
-      - name: Copy .env files
-        run: |
-          cp -rf ${{ github.workspace }}/codebase/.env.ci ${{ github.workspace }}/codebase/.env
-
-      - name: Make .htaccess and nginx.conf writebable
-        run: |
-          sudo chown -R $USER:$USER ${{ github.workspace }}/wordpress
-
-      - name: Run PHPUnit tests
-        continue-on-error: true
-        run: |
-          cd ${{ github.workspace }}/codebase && vendor/bin/phpunit --testdox --filter SecurityRulesApacheTest
+#      - uses: actions/checkout@v2
+#        with:
+#          path: 'codebase'
+#
+#      - name: Install dependencies
+#        run: |
+#          cd ${{ github.workspace }}/codebase && composer install && composer dump-autoload
+#
+#      - name: Copy .env files
+#        run: |
+#          cp -rf ${{ github.workspace }}/codebase/.env.ci ${{ github.workspace }}/codebase/.env
+#
+#      - name: Make .htaccess and nginx.conf writebable
+#        run: |
+#          sudo chown -R $USER:$USER ${{ github.workspace }}/wordpress
+#
+#      - name: Run PHPUnit tests
+#        continue-on-error: true
+#        run: |
+#          cd ${{ github.workspace }}/codebase && vendor/bin/phpunit --testdox --filter SecurityRulesApacheTest
 
       - name: Run debug
         run: |
