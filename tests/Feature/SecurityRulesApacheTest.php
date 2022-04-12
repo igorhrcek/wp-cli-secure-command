@@ -18,8 +18,8 @@ class SecurityRulesApacheTest extends BaseTestCase {
     public function setUp(): void {
         parent::setUp();
 
-//        $command = new AddSecurityHeaders($this->apacheAssocArgs);
-//        $command->output();
+        $command = new AddSecurityHeaders($this->apacheAssocArgs);
+        $command->output();
 
         $command = new BlockAccessToHtaccess($this->apacheAssocArgs);
         $command->output();
@@ -52,14 +52,14 @@ class SecurityRulesApacheTest extends BaseTestCase {
     /**
      * @group SecurityHeaders
      */
-//    public function testItWillContainAllHeadersOnApache() : void {
-//        $response = $this->apacheHttpClient->get('', ['http_errors' => false]);
-//
-//        $this->assertNotEmpty($response->getHeaderLine('Strict-Transport-Security'));
-//        $this->assertNotEmpty($response->getHeaderLine('Referrer-Policy'));
-//        $this->assertNotEmpty($response->getHeaderLine('x-content-type-options'));
-//        $this->assertNotEmpty($response->getHeaderLine('X-Frame-Options'));
-//    }
+    public function testItWillContainAllHeadersOnApache() : void {
+        $response = $this->apacheHttpClient->get('', ['http_errors' => false]);
+
+        $this->assertNotEmpty($response->getHeaderLine('Strict-Transport-Security'));
+        $this->assertNotEmpty($response->getHeaderLine('Referrer-Policy'));
+        $this->assertNotEmpty($response->getHeaderLine('x-content-type-options'));
+        $this->assertNotEmpty($response->getHeaderLine('X-Frame-Options'));
+    }
 
     /**
      * @group Htaccess
