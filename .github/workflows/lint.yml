@@ -1,0 +1,27 @@
+name: Lint
+on:
+  pull_request:
+    branches:
+      - master
+jobs:
+  lint:
+    runs-on: 'ubuntu-latest'
+    strategy:
+      matrix:
+        php-versions: ['7.4', '8.0', '8.1']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: composer,phpstan, phpcs
+      - name: Install composer packages
+        run: |
+          composer update
+          composer install
+      - name: Lint and run checks with phpstan
+        run: phpstan analyse src --level=5
+      - name: Check codestyle with phpcs
+        run: phpcs src
