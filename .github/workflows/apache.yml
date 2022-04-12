@@ -54,7 +54,5 @@ jobs:
 
       - name: Run debug
         run: |
-          docker logs wordpress
-          cat ${{ github.workspace }}/wordpress/.htaccess
           ls -la ${{ github.workspace }}/wordpress
           ls -la ${{ github.workspace }}/wordpress/wp-includes
