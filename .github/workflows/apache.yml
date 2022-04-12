@@ -1,5 +1,8 @@
 name: Apache tests
-on: [push]
+on:
+  pull_request:
+    branches:
+      - master
 jobs:
   tests:
     runs-on: 'ubuntu-latest'
@@ -48,10 +51,5 @@ jobs:
           sudo chown -R $USER:$USER ${{ github.workspace }}/wordpress
 
       - name: Run PHPUnit tests
-        continue-on-error: true
         run: |
           cd ${{ github.workspace }}/codebase && vendor/bin/phpunit --testdox --filter SecurityRulesApacheTest
-
-      - name: Run debug
-        run: |
-          ls -la ${{ github.workspace }}/wordpress
