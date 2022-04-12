@@ -56,3 +56,4 @@ jobs:
         run: |
           docker logs wordpress
           cat ${{ github.workspace }}/wordpress/.htaccess
+          ls -la ${{ github.workspace }}/wordpress
