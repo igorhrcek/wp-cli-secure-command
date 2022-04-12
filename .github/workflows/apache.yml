@@ -20,7 +20,7 @@ jobs:
           --health-timeout 5s
           --health-retries 3
       wordpress:
-        image: wordpress:latest
+        image: ghcr.io/igorhrcek/wordpress-docker-apache/wordpress-docker-apache:latest
         env:
           WORDPRESS_DB_HOST: mysql
           WORDPRESS_DB_USER: wordpress
