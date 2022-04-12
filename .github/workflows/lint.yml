@@ -24,4 +24,4 @@ jobs:
       - name: Lint and run checks with phpstan
         run: phpstan analyse src --level=5
       - name: Check codestyle with phpcs
-        run: phpcs src
+        run: phpcs src --standard=PSR12 --exclude=Generic.Files.LineLength
